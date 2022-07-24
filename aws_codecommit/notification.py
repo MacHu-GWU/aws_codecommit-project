@@ -162,45 +162,52 @@ class CodeCommitEvent:
     Data container class to represent a CodeCommit notification event.
     """
 
-    afterCommitId: Optional[str] = None
-    approvalStatus: Optional[str] = None
-    author: Optional[str] = None
-    beforeCommitId: Optional[str] = None
-    callerUserArn: Optional[str] = None
-    commentId: Optional[str] = None
-    commitId: Optional[str] = None
-    creationDate: Optional[str] = None
-    destinationCommit: Optional[str] = None
-    destinationCommitId: Optional[str] = None
-    destinationReference: Optional[str] = None
-    event: Optional[str] = None
-    isMerged: Optional[str] = None
-    inReplyTo: Optional[str] = None
-    lastModifiedDate: Optional[str] = None
-    mergeOption: Optional[str] = None
-    notificationBody: Optional[str] = None
-    oldCommitId: Optional[str] = None
-    overrideStatus: Optional[str] = None
-    pullRequestId: Optional[str] = None
-    pullRequestStatus: Optional[str] = None
-    referenceFullName: Optional[str] = None
-    referenceName: Optional[str] = None
-    referenceType: Optional[str] = None
-    repositoryId: Optional[str] = None
-    repositoryName: Optional[str] = None
-    repositoryNames: Optional[list] = None
-    revisionId: Optional[str] = None
-    sourceCommit: Optional[str] = None
-    sourceCommitId: Optional[str] = None
-    sourceReference: Optional[str] = None
-    title: Optional[str] = None
+    afterCommitId: str = ""
+    approvalStatus: str = ""
+    author: str = ""
+    beforeCommitId: str = ""
+    callerUserArn: str = ""
+    commentId: str = ""
+    commitId: str = ""
+    creationDate: str = ""
+    destinationCommit: str = ""
+    destinationCommitId: str = ""
+    destinationReference: str = ""
+    event: str = ""
+    isMerged: str = ""
+    inReplyTo: str = ""
+    lastModifiedDate: str = ""
+    mergeOption: str = ""
+    notificationBody: str = ""
+    oldCommitId: str = ""
+    overrideStatus: str = ""
+    pullRequestId: str = ""
+    pullRequestStatus: str = ""
+    referenceFullName: str = ""
+    referenceName: str = ""
+    referenceType: str = ""
+    repositoryId: str = ""
+    repositoryName: str = ""
+    revisionId: str = ""
+    sourceCommit: str = ""
+    sourceCommitId: str = ""
+    sourceReference: str = ""
+    title: str = ""
+    aws_account_id: str = ""
+    aws_region: str = ""
 
     _event_type: Optional[str] = None
     _commit_message: Optional[str] = None
 
     @classmethod
     def from_event(cls, event: dict) -> "CodeCommitEvent":
-        kwargs = event["detail"]
+        kwargs = event["detail"].copy()
+        if "repositoryNames" in kwargs:
+            kwargs["repositoryName"] = kwargs.pop("repositoryNames")[0]
+        repo_arn = event["resources"][0]
+        parts = repo_arn.split(":")
+        kwargs["aws_account_id"] = parts[4]
+        kwargs["aws_region"] = parts[3]
         return cls(**kwargs)
 
     def to_env_var(self, prefix="") -> dict:
@@ -219,10 +226,10 @@ class CodeCommitEvent:
     @cached_property
     def event_type(self) -> str:
         if self.event == "referenceUpdated":
-            if self.mergeOption is None:
-                return CodeCommitEventTypeEnum.commit_to_branch
-            else:
+            if self.mergeOption:
                 return CodeCommitEventTypeEnum.commit_to_branch_from_merge
+            else:
+                return CodeCommitEventTypeEnum.commit_to_branch
         elif self.event == "referenceCreated":
             return CodeCommitEventTypeEnum.create_branch
         elif self.event == "referenceDeleted":
@@ -246,10 +253,10 @@ class CodeCommitEvent:
         ):
             return CodeCommitEventTypeEnum.pr_merged
         elif self.event == "commentOnPullRequestCreated":
-            if self.inReplyTo is None:
-                return CodeCommitEventTypeEnum.comment_on_pr_created
-            else:
+            if self.inReplyTo:
                 return CodeCommitEventTypeEnum.reply_to_comment
+            else:
+                return CodeCommitEventTypeEnum.comment_on_pr_created
         elif (
             self.event == "pullRequestApprovalStateChanged"
             and self.approvalStatus == "APPROVE"
@@ -329,10 +336,7 @@ class CodeCommitEvent:
     # additional property
     @cached_property
     def repo_name(self) -> str:
-        if self.repositoryName is None:
-            return self.repositoryNames[0]
-        else:
-            return self.repositoryName
+        return self.repositoryName
 
     def assert_is_pr(self):
         if not self.is_pr:
