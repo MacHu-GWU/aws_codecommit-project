@@ -267,6 +267,29 @@ class CodeCommitEvent:
         else:  # pragma: no cover
             return CodeCommitEventTypeEnum.unknown
 
+    @cached_property
+    def event_description(self) -> str:
+        if self.is_commit:
+            return (
+                f"commit to {self.source_branch!r} branch, "
+                f"commit id is {self.source_commit}, "
+                f"commit message is {self.commit_message}."
+            )
+        elif self.is_pr:
+            return (
+                f"{self.event_type} "
+                f"from {self.source_branch!r} branch to "
+                f"{self.target_branch!r} branch, "
+                f"commit id is {self.source_commit}, "
+                f"commit message is {self.commit_message}."
+            )
+        elif self.is_comment:
+            return (
+                f"{self.event_type}"
+            )
+        else:
+            raise NotImplementedError
+
     # test Event Type
     @cached_property
     def is_commit_to_branch(self) -> bool:
@@ -311,6 +334,10 @@ class CodeCommitEvent:
     @cached_property
     def is_reply_to_comment(self) -> bool:
         return self.event_type == CodeCommitEventTypeEnum.reply_to_comment
+
+    @cached_property
+    def is_comment(self) -> bool:
+        return self.is_comment_on_pr_created or self.is_reply_to_comment
 
     @cached_property
     def is_approve_pr(self) -> bool:
