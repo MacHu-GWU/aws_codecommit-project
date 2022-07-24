@@ -45,7 +45,6 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
-    'sphinxcontrib.jinja',
     'sphinx_copybutton',
     'sphinx_inline_tabs',
     'docfly.directives',
@@ -218,18 +217,6 @@ custom_style_file_path = os.path.join(os.path.dirname(__file__), "_static", ".cu
 with open(custom_style_file_path, "rb") as f:
     custom_style_file_content = f.read().decode("utf-8")
 rst_prolog = "\n" + custom_style_file_content + "\n"
-
-# Add data for Jinja2
-try:
-    from aws_codecommit.docs import doc_data
-except:
-    doc_data = dict()
-
-jinja_contexts = {
-    "doc_data": {
-        "doc_data": doc_data,
-    },
-}
 
 # Api Reference Doc
 import docfly
