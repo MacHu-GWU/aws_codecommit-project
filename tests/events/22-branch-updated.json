@@ -17,7 +17,7 @@
         "referenceName": "feat/test-codecommit-event"
     },
     "resources": [
-        "arn:aws:codecommit:us-east-1:501105007192:aws_lbd_ci_example-project"
+        "arn:aws:codecommit:us-east-1:111122223333:aws_codecommit-project"
     ],
     "additionalAttributes": {}
 }
