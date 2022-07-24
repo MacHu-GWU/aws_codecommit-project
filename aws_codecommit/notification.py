@@ -199,8 +199,9 @@ class CodeCommitEvent:
     _commit_message: Optional[str] = None
 
     @classmethod
-    def from_detail(cls, detail: dict) -> "CodeCommitEvent":
-        return cls(**detail)
+    def from_event(cls, event: dict) -> "CodeCommitEvent":
+        kwargs = event["detail"]
+        return cls(**kwargs)
 
     def to_env_var(self, prefix="") -> dict:
         return {(prefix + k).upper(): v for k, v in dataclasses.asdict(self).items()}

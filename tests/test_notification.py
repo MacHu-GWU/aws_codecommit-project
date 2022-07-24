@@ -56,8 +56,8 @@ def read_json(file: str) -> dict:
 
 
 def read_cc_event(fname: str) -> CCE:
-    return CCE.from_detail(
-        read_json(f"{dir_codecommit_events / fname}")["detail"]
+    return CCE.from_event(
+        read_json(f"{dir_codecommit_events / fname}")
     )
 
 
