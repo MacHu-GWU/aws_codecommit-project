@@ -237,7 +237,7 @@ class CodeCommitEvent:
         elif self.event == "pullRequestCreated":
             if self.isMerged == "False" and self.pullRequestStatus == "Open":
                 return CodeCommitEventTypeEnum.pr_created
-            else:
+            else:  # pragma: no cover
                 raise NotImplementedError
         elif (
             self.event == "pullRequestStatusChanged"

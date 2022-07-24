@@ -112,17 +112,16 @@ def test_event_type():
 
 def test_properties():
     for cc_event in cc_event_list:
-        assert cc_event.repo_name is not None
-
+        assert cc_event.repo_name
     assert CCEventEnum.pull_request_created.is_pr
     assert CCEventEnum.pull_request_closed.is_pr
     assert CCEventEnum.pull_request_updated.is_pr
     assert CCEventEnum.pull_request_merged.is_pr
 
-    assert CCEventEnum.pull_request_created.pr_id is not None
-    assert CCEventEnum.pull_request_closed.pr_id is not None
-    assert CCEventEnum.pull_request_updated.pr_id is not None
-    assert CCEventEnum.pull_request_merged.pr_id is not None
+    assert CCEventEnum.pull_request_created.pr_id
+    assert CCEventEnum.pull_request_closed.pr_id
+    assert CCEventEnum.pull_request_updated.pr_id
+    assert CCEventEnum.pull_request_merged.pr_id
 
     with pytest.raises(TypeError):
         assert CCEventEnum.commit_to_master.pr_id
@@ -140,15 +139,15 @@ def test_properties():
     assert CCEventEnum.pull_request_closed.pr_is_merged is False
     assert CCEventEnum.pull_request_merged.pr_is_merged
 
-    assert CCEventEnum.pull_request_updated.source_branch is not None
-    assert CCEventEnum.pull_request_updated.source_commit is not None
-    assert CCEventEnum.pull_request_updated.target_branch is not None
-    assert CCEventEnum.pull_request_updated.target_commit is not None
+    assert CCEventEnum.pull_request_updated.source_branch
+    assert CCEventEnum.pull_request_updated.source_commit
+    assert CCEventEnum.pull_request_updated.target_branch
+    assert CCEventEnum.pull_request_updated.target_commit
 
-    assert CCEventEnum.commit_to_master.source_commit is not None
+    assert CCEventEnum.commit_to_master.source_commit
     assert CCEventEnum.commit_to_master.source_is_main_branch
 
-    assert CCEventEnum.commit_to_master.target_commit is not None
+    assert CCEventEnum.commit_to_master.target_commit
     with pytest.raises(NotImplementedError):
         _ = CCEventEnum.commit_to_master.target_branch
 
