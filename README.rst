@@ -6,7 +6,7 @@
 .. image:: https://github.com/MacHu-GWU/aws_codecommit-project/workflows/CI/badge.svg
     :target: https://github.com/MacHu-GWU/aws_codecommit-project/actions?query=workflow:CI
 
-.. image:: https://codecov.io/gh/MacHu-GWU/aws_codecommit-project/branch/master/graph/badge.svg
+.. image:: https://codecov.io/gh/MacHu-GWU/aws_codecommit-project/branch/main/graph/badge.svg
     :target: https://codecov.io/gh/MacHu-GWU/aws_codecommit-project
 
 .. image:: https://img.shields.io/pypi/v/aws_codecommit.svg
