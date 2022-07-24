@@ -3,6 +3,11 @@
 """
 The core of CI/CD on AWS CodeCommit / CodeBuild.
 
+You can create an AWS CodeCommit notification event rule, and send those events
+to AWS SNS topic, then use an AWS Lambda function to subscript the SNS topic,
+use this library to parse the data, and use if else condition to decide when
+to trigger CI build job.
+
 This solution requires >= Python3.8 because of the ``cached_property``
 Since it is only used in the AWS Lambda Function, there's no need to use
 this inside of your application code.
@@ -13,9 +18,9 @@ import dataclasses
 
 from .compat import need_cached_property
 
-if need_cached_property:
+if need_cached_property: # pragma: no cover
     from cached_property import cached_property
-else:
+else: # pragma: no cover
     from functools import cached_property
 
 try:
@@ -195,6 +200,19 @@ class CodeCommitEvent:
     @classmethod
     def from_detail(cls, detail: dict) -> "CodeCommitEvent":
         return cls(**detail)
+
+    def to_env_var(self, prefix="") -> dict:
+        return {(prefix + k).upper(): v for k, v in dataclasses.asdict(self).items()}
+
+    @classmethod
+    def from_env_var(cls, env_var: dict, prefix="") -> "CodeCommitEvent":
+        field_set = {field.name for field in dataclasses.fields(cls)}
+        kwargs = dict()
+        for field_name in field_set:
+            key = (prefix + field_name).upper()
+            if key in env_var:
+                kwargs[field_name] = env_var[key]
+        return cls(**kwargs)
 
     @cached_property
     def event_type(self) -> str:

@@ -5,14 +5,13 @@ import pytest
 from typing import List
 import re
 import json
+import dataclasses
 from pathlib import Path
 from unittest.mock import patch, PropertyMock
 
-import aws_codecommit.notification
 from aws_codecommit.notification import (
     CodeCommitEventTypeEnum,
     CodeCommitEvent,
-    SemanticCommitEnum,
     parse_commit_message,
 )
 
@@ -84,8 +83,17 @@ cc_event_list: List[CodeCommitEvent] = [
 ]
 
 
+def test_env_var_seder():
+    for cc_event in cc_event_list:
+        env_var = cc_event.to_env_var(prefix="CUSTOM_")
+        cc_event1 = CodeCommitEvent.from_env_var(env_var, prefix="CUSTOM_")
+        assert (
+            dataclasses.asdict(cc_event)
+            == dataclasses.asdict(cc_event1)
+        )
+
+
 def test_event_type():
-    print(CCEventEnum.pull_request_commit_merge_to_master.is_commit_to_branch_from_merge)
     assert CCEventEnum.commit_to_master.is_commit_to_branch
     assert CCEventEnum.pull_request_commit_merge_to_master.is_commit_to_branch_from_merge
     assert CCEventEnum.branch_created.is_create_branch
