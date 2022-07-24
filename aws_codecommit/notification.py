@@ -10,7 +10,13 @@ this inside of your application code.
 
 from typing import List, Optional
 import dataclasses
-from functools import cached_property
+
+from .compat import need_cached_property
+
+if need_cached_property:
+    from cached_property import cached_property
+else:
+    from functools import cached_property
 
 try:
     from .cc_client import get_commit_message

@@ -3,11 +3,8 @@
 [run]
 omit =
     aws_codecommit/_version.py
-    aws_codecommit/cli.py
-    aws_codecommit/pkg/*
-    aws_codecommit/docs/*
-    aws_codecommit/tests/*
-    aws_codecommit/handlers/*
+    aws_codecommit/cc_client.py
+    aws_codecommit/compat.py
 
 [report]
 # Regexes for lines to exclude from consideration
