@@ -3,11 +3,11 @@
     :target: https://aws_codecommit.readthedocs.io/index.html
     :alt: Documentation Status
 
-.. image:: https://github.com//aws_codecommit-project/workflows/CI/badge.svg
-    :target: https://github.com//aws_codecommit-project/actions?query=workflow:CI
+.. image:: https://github.com/MacHu-GWU/aws_codecommit-project/workflows/CI/badge.svg
+    :target: https://github.com/MacHu-GWU/aws_codecommit-project/actions?query=workflow:CI
 
-.. image:: https://codecov.io/gh//aws_codecommit-project/branch/master/graph/badge.svg
-    :target: https://codecov.io/gh//aws_codecommit-project
+.. image:: https://codecov.io/gh/MacHu-GWU/aws_codecommit-project/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/MacHu-GWU/aws_codecommit-project
 
 .. image:: https://img.shields.io/pypi/v/aws_codecommit.svg
     :target: https://pypi.python.org/pypi/aws_codecommit
@@ -19,7 +19,7 @@
     :target: https://pypi.python.org/pypi/aws_codecommit
 
 .. image:: https://img.shields.io/badge/STAR_Me_on_GitHub!--None.svg?style=social
-    :target: https://github.com//aws_codecommit-project
+    :target: https://github.com/MacHu-GWU/aws_codecommit-project
 
 ------
 
@@ -37,13 +37,13 @@
     :target: `install`_
 
 .. image:: https://img.shields.io/badge/Link-GitHub-blue.svg
-    :target: https://github.com//aws_codecommit-project
+    :target: https://github.com/MacHu-GWU/aws_codecommit-project
 
 .. image:: https://img.shields.io/badge/Link-Submit_Issue-blue.svg
-    :target: https://github.com//aws_codecommit-project/issues
+    :target: https://github.com/MacHu-GWU/aws_codecommit-project/issues
 
 .. image:: https://img.shields.io/badge/Link-Request_Feature-blue.svg
-    :target: https://github.com//aws_codecommit-project/issues
+    :target: https://github.com/MacHu-GWU/aws_codecommit-project/issues
 
 .. image:: https://img.shields.io/badge/Link-Download-blue.svg
     :target: https://pypi.org/pypi/aws_codecommit#files
