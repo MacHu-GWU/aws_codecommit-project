@@ -27,7 +27,7 @@
         "sourceCommit": "6b1b688dd10c83db424d62790891855ac6c9968d" // the commit to merge
     },
     "resources": [
-        "arn:aws:codecommit:us-east-1:111122223333:aws_codecommit-project
+        "arn:aws:codecommit:us-east-1:111122223333:aws_codecommit-project"
     ],
     "additionalAttributes": {}
 }
