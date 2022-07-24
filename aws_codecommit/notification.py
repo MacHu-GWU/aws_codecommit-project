@@ -18,9 +18,9 @@ import dataclasses
 
 from .compat import need_cached_property
 
-if need_cached_property: # pragma: no cover
+if need_cached_property:  # pragma: no cover
     from cached_property import cached_property
-else: # pragma: no cover
+else:  # pragma: no cover
     from functools import cached_property
 
 try:
@@ -90,6 +90,7 @@ class SemanticCommitEnum:
     It is a good way to allow developer controls the CI behavior with small
     effort.
     """
+
     chore = "chore"  # house cleaning, do nothing
     feat = "feat"  # feature, message can be automatically picked up in description
     build = "build"  # build artifacts
@@ -103,21 +104,19 @@ class SemanticCommitEnum:
 
 
 valid_commit_action_list = [
-    v
-    for k, v in SemanticCommitEnum.__dict__.items()
-    if not k.startswith("_")
+    v for k, v in SemanticCommitEnum.__dict__.items() if not k.startswith("_")
 ]
 valid_commit_action_set = set(valid_commit_action_list)
 
 
 def _parse_commit_message(msg: str) -> List[str]:
     if msg.strip().lower() in valid_commit_action_set:
-        return [msg.strip().lower(), ]
+        return [
+            msg.strip().lower(),
+        ]
 
     words = [
-        word.strip().lower()
-        for word in msg.split(":")[0].split(",")
-        if word.strip()
+        word.strip().lower() for word in msg.split(":")[0].split(",") if word.strip()
     ]
     return [word for word in words if word in valid_commit_action_set]
 
@@ -141,6 +140,7 @@ class CodeCommitEventTypeEnum:
 
     It is the value of the :meth:`CodeCommitEvent.event_type` method.
     """
+
     commit_to_branch = "commit_to_branch"
     commit_to_branch_from_merge = "commit_to_branch_from_merge"
     create_branch = "create_branch"
@@ -161,6 +161,7 @@ class CodeCommitEvent:
     """
     Data container class to represent a CodeCommit notification event.
     """
+
     afterCommitId: Optional[str] = None
     approvalStatus: Optional[str] = None
     author: Optional[str] = None
@@ -226,10 +227,7 @@ class CodeCommitEvent:
         elif self.event == "referenceDeleted":
             return CodeCommitEventTypeEnum.delete_branch
         elif self.event == "pullRequestCreated":
-            if (
-                self.isMerged == "False"
-                and self.pullRequestStatus == "Open"
-            ):
+            if self.isMerged == "False" and self.pullRequestStatus == "Open":
                 return CodeCommitEventTypeEnum.pr_created
             else:
                 raise NotImplementedError
