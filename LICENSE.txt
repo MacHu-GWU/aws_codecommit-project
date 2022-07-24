@@ -1,6 +1,6 @@
 The MIT License (MIT)
 
-Copyright 2022 Sanhe Hu <https://github.com//aws_codecommit-project>
+Copyright 2022 Sanhe Hu <https://github.com/MacHu-GWU/aws_codecommit-project>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
