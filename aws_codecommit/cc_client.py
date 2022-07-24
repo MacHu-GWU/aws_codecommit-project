@@ -78,3 +78,66 @@ def commit_file(
             if "SameFileContentException" in e.__class__.__name__:
                 return None
         raise e
+
+
+def get_text_file_content(
+    repo_name: str,
+    commit_id: str,
+    file_path: str,
+) -> str:
+    """
+    Get text file content from CodeCommit repo.
+    """
+    res = cc_client.get_file(
+        repositoryName=repo_name,
+        commitSpecifier=commit_id,
+        filePath=file_path,
+    )
+    return res["fileContent"].decode("utf-8")
+
+
+def post_comment_for_pull_request(
+    repo_name: str,
+    pr_id: str,
+    before_commit_id: str,
+    after_commit_id: str,
+    content: str,
+) -> str:
+    """
+    Put a comment in CodeCommit Pull Request activity view.
+    """
+    res = cc_client.post_comment_for_pull_request(
+        pullRequestId=pr_id,
+        repositoryName=repo_name,
+        beforeCommitId=before_commit_id,
+        afterCommitId=after_commit_id,
+        content=content,
+    )
+    return res["comment"]["commentId"]
+
+
+def update_comment(
+    comment_id: str,
+    content: str
+):  # pragma: no cover
+    """
+    Update an existing comment.
+    """
+    cc_client.update_comment(
+        commentId=comment_id,
+        content=content,
+    )
+
+
+def reply_comment(
+    comment_id: str,
+    content: str,
+) -> str:  # pragma: no cover
+    """
+    Reply to comment
+    """
+    res = cc_client.post_comment_reply(
+        inReplyTo=comment_id,
+        content=content,
+    )
+    return res["comment"]["commentId"]
