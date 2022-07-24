@@ -52,7 +52,12 @@
 Welcome to ``aws_codecommit`` Documentation
 ==============================================================================
 
-Documentation for ``aws_codecommit``.
+``aws_codecommit`` aim to extract more potential from AWS CodeCommit.
+
+Features:
+
+- Git API for Human: let machine to commit code for you.
+- Git Event hook automation: make AWS CodeCommit works with CI systems.
 
 
 .. _install:
