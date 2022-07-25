@@ -184,9 +184,6 @@ class CodeCommitEvent:
     aws_account_id: str = ""
     aws_region: str = ""
 
-    _event_type: Optional[str] = None
-    _commit_message: Optional[str] = None
-
     @classmethod
     def from_event(cls, event: dict) -> "CodeCommitEvent":
         kwargs = event["detail"].copy()
