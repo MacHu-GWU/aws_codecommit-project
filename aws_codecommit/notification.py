@@ -354,13 +354,13 @@ class CodeCommitEvent:
     @cached_property
     def source_branch(self) -> str:
         if self.is_pr:
-            return self.sourceReference
+            return self.sourceReference.replace("refs/heads/", "", 1)
         elif self.is_commit:
             return self.referenceName
         elif self.is_comment:  # pragma: no cover
             return ""
         elif self.is_approve_pr or self.is_approve_rule_override:
-            return self.sourceReference
+            return self.sourceReference.replace("refs/heads/", "", 1)
         else:  # pragma: no cover
             return ""
 
@@ -380,9 +380,9 @@ class CodeCommitEvent:
     @cached_property
     def target_branch(self) -> str:
         if self.is_pr:
-            return self.destinationReference
+            return self.destinationReference.replace("refs/heads/", "", 1)
         elif self.is_approve_pr or self.is_approve_rule_override:
-            return self.destinationReference
+            return self.destinationReference.replace("refs/heads/", "", 1)
         else:  # pragma: no cover
             return ""
 
