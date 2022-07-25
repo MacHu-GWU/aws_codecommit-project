@@ -7,7 +7,9 @@ bin_pip="pip3.8"
 
 #echo ${dir_site_packages}
 rm -r "${dir_site_packages}"
+
 ${bin_pip} install -r "${dir_here}/requirements.txt" -t "${dir_site_packages}"
+cp "${dir_here}/lambda_handler.py" "${dir_site_packages}/lambda_handler.py"
 
 cd "${dir_site_packages}" || exit
 zip "${dir_here}/deploy.zip" * -r -9 -q
