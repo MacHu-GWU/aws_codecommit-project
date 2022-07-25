@@ -157,16 +157,24 @@ class BuildJob:
             f"build/{self.build_run_id}/?region={self.aws_region}"
         )
 
-    def update_env_var(self, key: str, value: str):
+    def upsert_env_var(self, key: str, value: str):
         """
         Update environment variable information for the build job metadata.
         """
+        is_update = False
         for dct in self.start_build_kwargs.get(
             "environmentVariablesOverride", []
         ):
             if dct["name"] == key:
                 dct["value"] = value
-            self.env_var[key] = value
+                is_update = True
+        if is_update is False:
+            self.start_build_kwargs.get(
+                "environmentVariablesOverride", []
+            ).append(
+                dict(name=key, value=value, type="PLAINTEXT")
+            )
+        self.env_var[key] = value
 
     def start_build(self) -> str:
         """
@@ -383,10 +391,36 @@ def do_we_trigger_build_job(cc_event: CodeCommitEvent) -> bool:
         return False
 
 
+CI_DATA_PREFIX = "CI_DATA_"
+
+
 @dataclasses.dataclass
 class CIData:
     commit_message: str = ""
     comment_id: str = ""
+
+    def add_to_job_env_var(
+        self,
+        job: BuildJob,
+        prefix: "",
+    ):
+        for attr, value in dataclasses.asdict(self).items():
+            key = (prefix + attr).upper()
+            job.upsert_env_var(key, value)
+
+    @classmethod
+    def from_env_var(
+        cls,
+        env_var: dict,
+        prefix="",
+    ) -> 'CIData':
+        field_set = {field.name for field in dataclasses.fields(cls)}
+        kwargs = dict()
+        for field_name in field_set:
+            key = (prefix + field_name).upper()
+            if key in env_var:
+                kwargs[field_name] = env_var[key]
+        return cls(**kwargs)
 
 
 def handle_codecommit_event(cc_event: CodeCommitEvent):
@@ -408,11 +442,14 @@ def handle_codecommit_event(cc_event: CodeCommitEvent):
         ci_data = CIData()
         # create a comment thread to the PR for this build job
         if job.is_pr:
+            # update conditional attributes value
+            job.commit_message = cc_event.commit_message
+
             pr_commit_console_url = (
                 f"https://{job.aws_region}.console.aws.amazon.com/"
                 f"codesuite/codecommit/repositories/{job.repo_name}/"
                 f"pull-requests/{job.pr_id}/"
-                f"commit/{job.after_commit_id}?region={job.aws_region}"
+                f"commit/{job.before_commit_id}?region={job.aws_region}"
             )
             build_job_comment_id = post_comment_for_pull_request(
                 repo_name=job.repo_name,
@@ -422,14 +459,17 @@ def handle_codecommit_event(cc_event: CodeCommitEvent):
                 content="\n".join([
                     "## 🌴 A build job is triggered, let's relax.",
                     "",
-                    f"- commit id: [{job.after_commit_id[:7]}]({pr_commit_console_url})",
+                    f"- commit id: [{job.before_commit_id[:7]}]({pr_commit_console_url})",
                     f"- commit message: ``{job.commit_message.strip()}``",
                 ]),
             )
+
             ci_data.comment_id = build_job_comment_id
+            ci_data.commit_message = cc_event.commit_message
+
             # pass in the comment id into the build job env var,
             # so we can reply to the thread during the build job run
-            job.update_env_var("CI_DATA_COMMENT_ID", ci_data.comment_id)
+            ci_data.add_to_job_env_var(job, prefix="CI_DATA_")
 
             build_run_id = job.start_build()
 
