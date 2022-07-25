@@ -237,7 +237,7 @@ class CodeCommitEvent:
             and self.pullRequestStatus == "Closed"
         ):
             return CodeCommitEventTypeEnum.pr_merged
-        elif self.event == "commentOnPullRequestCreated":
+        elif self.event in ["commentOnPullRequestCreated", "commentOnPullRequestUpdated"]:
             if self.inReplyTo:
                 return CodeCommitEventTypeEnum.reply_to_comment
             else:
