@@ -1,2 +1,2 @@
-aws_codecommit==0.0.4
+aws_codecommit==0.0.5
 aws_codebuild==0.0.1
