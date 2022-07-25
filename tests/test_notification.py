@@ -73,9 +73,12 @@ class CCEventEnum:
     pull_request_merged = read_cc_event("35-pull-request-merged.json")
     comment_on_pull_request_specific_file = read_cc_event("41-comment-on-pull-request-specific-file.json")
     comment_on_pull_request_overall = read_cc_event("42-comment-on-pull-request-overall.json")
-    reploy_to_comment = read_cc_event("43-reply-to-comment-message.json")
-    approval = read_cc_event("44-approval.json")
-    approval_rule_override = read_cc_event("45-approval-rule-override.json")
+    reply_to_comment_pr_created = read_cc_event("43-reply-to-comment-message-pr-created.json")
+    comment_on_pull_request_updated = read_cc_event("44-comment-on-pull-request-updated.json")
+    comment_on_pull_request_merged = read_cc_event("45-comment-on-pull-request-merged.json")
+    reply_to_comment_pr_updated = read_cc_event("46-reply-to-comment-message-pr-updated.json")
+    approval = read_cc_event("51-approval.json")
+    approval_rule_override = read_cc_event("52-approval-rule-override.json")
 
 
 cc_event_list: List[CodeCommitEvent] = [
@@ -105,7 +108,10 @@ def test_event_type():
     assert CCEventEnum.pull_request_merged.is_pr_merged
     assert CCEventEnum.comment_on_pull_request_specific_file.is_comment_on_pr_created
     assert CCEventEnum.comment_on_pull_request_overall.is_comment_on_pr_created
-    assert CCEventEnum.reploy_to_comment.is_reply_to_comment
+    assert CCEventEnum.reply_to_comment_pr_created.is_reply_to_comment
+    assert CCEventEnum.comment_on_pull_request_updated.is_comment_on_pr_updated
+    assert CCEventEnum.comment_on_pull_request_merged.is_comment_on_pr_created
+    assert CCEventEnum.reply_to_comment_pr_updated.is_reply_to_comment
     assert CCEventEnum.approval.is_approve_pr
     assert CCEventEnum.approval_rule_override.is_approve_rule_override
 

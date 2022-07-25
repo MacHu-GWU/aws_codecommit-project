@@ -138,6 +138,7 @@ class CodeCommitEventTypeEnum:
     pr_updated = "pr_updated"
     pr_merged = "pr_merged"
     comment_on_pr_created = "comment_on_pr_created"
+    comment_on_pr_updated = "comment_on_pr_updated"
     reply_to_comment = "reply_to_comment"
     approve_pr = "approve_pr"
     approve_rule_override = "approve_rule_override"
@@ -237,11 +238,16 @@ class CodeCommitEvent:
             and self.pullRequestStatus == "Closed"
         ):
             return CodeCommitEventTypeEnum.pr_merged
-        elif self.event in ["commentOnPullRequestCreated", "commentOnPullRequestUpdated"]:
+        elif self.event == "commentOnPullRequestCreated":
             if self.inReplyTo:
                 return CodeCommitEventTypeEnum.reply_to_comment
             else:
                 return CodeCommitEventTypeEnum.comment_on_pr_created
+        elif self.event == "commentOnPullRequestUpdated":
+            if self.inReplyTo:
+                return CodeCommitEventTypeEnum.reply_to_comment
+            else:
+                return CodeCommitEventTypeEnum.comment_on_pr_updated
         elif (
             self.event == "pullRequestApprovalStateChanged"
             and self.approvalStatus == "APPROVE"
@@ -313,6 +319,10 @@ class CodeCommitEvent:
     @cached_property
     def is_comment_on_pr_created(self) -> bool:
         return self.event_type == CodeCommitEventTypeEnum.comment_on_pr_created
+
+    @cached_property
+    def is_comment_on_pr_updated(self) -> bool:
+        return self.event_type == CodeCommitEventTypeEnum.comment_on_pr_updated
 
     @cached_property
     def is_reply_to_comment(self) -> bool:
