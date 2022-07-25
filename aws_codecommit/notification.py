@@ -256,7 +256,7 @@ class CodeCommitEvent:
             return CodeCommitEventTypeEnum.unknown
 
     @cached_property
-    def event_description(self) -> str:
+    def event_description(self) -> str:  # pragma: no cover
         if self.is_commit:
             return (
                 f"commit to {self.source_branch!r} branch, "
@@ -272,9 +272,7 @@ class CodeCommitEvent:
                 f"commit message is {self.commit_message}."
             )
         elif self.is_comment:
-            return (
-                f"{self.event_type}"
-            )
+            return f"{self.event_type}"
         else:
             return ""
 
@@ -383,6 +381,8 @@ class CodeCommitEvent:
     def target_branch(self) -> str:
         if self.is_pr:
             return self.destinationReference
+        elif self.is_approve_pr or self.is_approve_rule_override:
+            return self.destinationReference
         else:  # pragma: no cover
             return ""
 
@@ -392,6 +392,10 @@ class CodeCommitEvent:
             return self.destinationCommit
         elif self.is_commit:
             return self.oldCommitId
+        elif self.is_comment:
+            return self.beforeCommitId
+        elif self.is_approve_pr or self.is_approve_rule_override:
+            return self.destinationCommit
         else:  # pragma: no cover
             return ""
 

@@ -113,6 +113,7 @@ def test_event_type():
 def test_properties():
     for cc_event in cc_event_list:
         assert cc_event.repo_name
+
     assert CCEventEnum.pull_request_created.is_pr
     assert CCEventEnum.pull_request_closed.is_pr
     assert CCEventEnum.pull_request_updated.is_pr
@@ -143,11 +144,27 @@ def test_properties():
     assert CCEventEnum.pull_request_updated.target_branch
     assert CCEventEnum.pull_request_updated.target_commit
 
+    assert CCEventEnum.commit_to_master.source_branch
     assert CCEventEnum.commit_to_master.source_commit
     assert CCEventEnum.commit_to_master.source_is_main_branch
-
     assert CCEventEnum.commit_to_master.target_commit
     assert CCEventEnum.commit_to_master.target_branch == ""
+
+    assert CCEventEnum.commit_to_master.is_comment is False
+    assert CCEventEnum.pull_request_created.is_comment is False
+    assert CCEventEnum.approval.is_comment is False
+    assert CCEventEnum.comment_on_pull_request_overall.is_comment
+    assert CCEventEnum.comment_on_pull_request_specific_file.is_comment
+
+    assert CCEventEnum.comment_on_pull_request_overall.source_branch == ""
+    assert CCEventEnum.comment_on_pull_request_overall.source_commit
+    assert CCEventEnum.comment_on_pull_request_overall.target_branch == ""
+    assert CCEventEnum.comment_on_pull_request_overall.target_commit
+
+    assert CCEventEnum.approval.source_branch
+    assert CCEventEnum.approval.source_commit
+    assert CCEventEnum.approval.target_branch
+    assert CCEventEnum.approval.target_commit
 
 
 def test_semantic_branch():
