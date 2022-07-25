@@ -113,6 +113,8 @@ def test_event_type():
 def test_properties():
     for cc_event in cc_event_list:
         assert cc_event.repo_name
+        assert cc_event.aws_account_id
+        assert cc_event.aws_region
 
     assert CCEventEnum.pull_request_created.is_pr
     assert CCEventEnum.pull_request_closed.is_pr
