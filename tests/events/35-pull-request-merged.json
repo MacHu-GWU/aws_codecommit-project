@@ -11,7 +11,7 @@
         "author": "arn:aws:iam::111122223333:user/alice",
         "isMerged": "True",
         "pullRequestStatus": "Closed",
-        "notificationBody": "A pull request event occurred in the following AWS CodeCommit repository: aws_lbd_ci_example-project. User: arn:aws:iam::111122223333:user/alice. Event: Updated. Pull request name: 6. Additional information: The pull request merge status has been updated. The status is merged. For more information, go to the AWS CodeCommit console https://us-east-1.console.aws.amazon.com/codesuite/codecommit/repositories/aws_lbd_ci_example-project/pull-requests/6?region=us-east-1.",
+        "notificationBody": "A pull request event occurred in the following AWS CodeCommit repository: aws_codecommit-project. User: arn:aws:iam::111122223333:user/alice. Event: Updated. Pull request name: 6. Additional information: The pull request merge status has been updated. The status is merged. For more information, go to the AWS CodeCommit console https://us-east-1.console.aws.amazon.com/codesuite/codecommit/repositories/aws_codecommit-project/pull-requests/6?region=us-east-1.",
         "destinationReference": "refs/heads/master",
         "callerUserArn": "arn:aws:iam::111122223333:user/alice",
         "creationDate": "Tue Jul 19 04:41:13 UTC 2022",
@@ -19,7 +19,7 @@
         "title": "feat/test-codecommit-event",
         "revisionId": "95fe786cc4ac17112f98f5037d595246917209b7bea6a9205465f43a09bbf694",
         "repositoryNames": [
-            "aws_lbd_ci_example-project"
+            "aws_codecommit-project"
         ],
         "destinationCommit": "3c46a6ebbe1055446e83fb9757ad9c3f2d1d8b4f", // old master commit
         "event": "pullRequestMergeStatusUpdated",

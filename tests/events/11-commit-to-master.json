@@ -12,7 +12,7 @@
         "commitId": "e622622f2771fa02afa943959c3902617bc19e60",
         "callerUserArn": "arn:aws:iam::111122223333:user/alice",
         "event": "referenceUpdated",
-        "repositoryName": "aws_lbd_ci_example-project",
+        "repositoryName": "aws_codecommit-project",
         "oldCommitId": "974cc92c85782989dbee8ec27650feaf10dcca0f",
         "referenceName": "master"
     },

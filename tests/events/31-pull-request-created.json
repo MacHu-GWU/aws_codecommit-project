@@ -11,7 +11,7 @@
         "author": "arn:aws:iam::111122223333:user/alice",
         "isMerged": "False",
         "pullRequestStatus": "Open",
-        "notificationBody": "A pull request event occurred in the following AWS CodeCommit repository: aws_lbd_ci_example-project. User: arn:aws:iam::111122223333:user/alice. Event: Created. Pull request name: 4. Additional information: A pull request was created with the following ID: 4. The title of the pull request is: feat/test-codecommit-event. For more information, go to the AWS CodeCommit console https://us-east-1.console.aws.amazon.com/codesuite/codecommit/repositories/aws_lbd_ci_example-project/pull-requests/4?region=us-east-1.",
+        "notificationBody": "A pull request event occurred in the following AWS CodeCommit repository: aws_codecommit-project. User: arn:aws:iam::111122223333:user/alice. Event: Created. Pull request name: 4. Additional information: A pull request was created with the following ID: 4. The title of the pull request is: feat/test-codecommit-event. For more information, go to the AWS CodeCommit console https://us-east-1.console.aws.amazon.com/codesuite/codecommit/repositories/aws_codecommit-project/pull-requests/4?region=us-east-1.",
         "destinationReference": "refs/heads/master",
         "callerUserArn": "arn:aws:iam::111122223333:user/alice",
         "creationDate": "Tue Jul 19 04:28:05 UTC 2022",
@@ -19,7 +19,7 @@
         "revisionId": "fb07cc3978ed660f4517fbc6aff97daade22b246e9df212b2550ba76569acb6f",
         "title": "feat/test-codecommit-event",
         "repositoryNames": [
-            "aws_lbd_ci_example-project"
+            "aws_codecommit-project"
         ],
         "destinationCommit": "3c46a6ebbe1055446e83fb9757ad9c3f2d1d8b4f", // old master branch commit id
         "event": "pullRequestCreated",

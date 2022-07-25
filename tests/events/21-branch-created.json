@@ -12,7 +12,7 @@
         "commitId": "3c46a6ebbe1055446e83fb9757ad9c3f2d1d8b4f", // the commit id when it is created
         "callerUserArn": "arn:aws:iam::111122223333:user/alice",
         "event": "referenceCreated",
-        "repositoryName": "aws_lbd_ci_example-project",
+        "repositoryName": "aws_codecommit-project",
         "referenceName": "feat/test-codecommit-event"
     },
     "resources": [

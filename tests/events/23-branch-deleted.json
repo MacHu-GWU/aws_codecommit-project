@@ -11,7 +11,7 @@
         "referenceType": "branch",
         "callerUserArn": "arn:aws:iam::111122223333:user/alice",
         "event": "referenceDeleted",
-        "repositoryName": "aws_lbd_ci_example-project",
+        "repositoryName": "aws_codecommit-project",
         "oldCommitId": "a24b68b588a02baf581770bd925b647f1d0bcd25", // the latest commit id when it is deleted
         "referenceName": "feat/test-codecommit-event"
     },
