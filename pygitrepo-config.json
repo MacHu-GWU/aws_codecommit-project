@@ -17,15 +17,15 @@
     // if you use AWS S3 to host your document website
     // it is the aws profile you use for doc site deployment
     // leave empty string "" if you don't use it
-    "DOC_HOST_AWS_PROFILE": "aws_data_lab_open_source_us_east_1",
+    "DOC_HOST_AWS_PROFILE": "",
     // it is the aws s3 bucket you use to store you document files
-    "DOC_HOST_S3_BUCKET": "501105007192-us-east-1-artifacts",
+    "DOC_HOST_S3_BUCKET": "",
 
     // if it is an AWS Lambda microservice project
     // it is the aws profile you use for deployment
-    "AWS_LAMBDA_DEPLOY_AWS_PROFILE": "aws_data_lab_open_source_us_east_1",
+    "AWS_LAMBDA_DEPLOY_AWS_PROFILE": "",
     // it is the aws s3 bucket to store deployment artifacts
-    "AWS_LAMBDA_DEPLOY_S3_BUCKET": "501105007192-us-east-1-artifacts",
+    "AWS_LAMBDA_DEPLOY_S3_BUCKET": "",
     // it is the docker image for AWS Lambda layer build on your local machine
     "AWS_LAMBDA_BUILD_DOCKER_IMAGE": "lambci/lambda:build-python3.8",
     // it is the working directory for temp lambda layer build in docker image
