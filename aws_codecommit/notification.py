@@ -42,40 +42,28 @@ def is_main_branch(name: str) -> bool:
     return name in MAIN_BRANCH
 
 
+def is_certain_semantic_branch(name: str, words: List[str]) -> bool:
+    flag = False
+    for word in words:
+        flag = flag or name.startswith(f"{word}/")
+        flag = flag or (name == word)
+    return flag
+
+
 def is_develop_branch(name: str) -> bool:
-    return (
-        name.startswith("dev/")
-        or name.startswith("develop/")
-        or name == "dev"
-        or name == "develop"
-    )
+    return is_certain_semantic_branch(name, ["dev", "develop"])
 
 
 def is_feature_branch(name: str) -> bool:
-    return (
-        name.startswith("feat/")
-        or name.startswith("feature/")
-        or name == "feat"
-        or name == "feature"
-    )
+    return is_certain_semantic_branch(name, ["feat", "feature"])
 
 
 def is_release_branch(name: str) -> bool:
-    return (
-        name.startswith("rls/")
-        or name.startswith("release/")
-        or name == "rls"
-        or name == "release"
-    )
+    return is_certain_semantic_branch(name, ["rls", "release"])
 
 
 def is_hotfix_branch(name: str) -> bool:
-    return (
-        name.startswith("fix/")
-        or name.startswith("hotfix/")
-        or name == "fix"
-        or name == "hotfix"
-    )
+    return is_certain_semantic_branch(name, ["fix", "hotfix"])
 
 
 # ------------------------------------------------------------------------------
@@ -238,7 +226,7 @@ class CodeCommitEvent:
             if self.isMerged == "False" and self.pullRequestStatus == "Open":
                 return CodeCommitEventTypeEnum.pr_created
             else:  # pragma: no cover
-                raise NotImplementedError
+                return CodeCommitEventTypeEnum.unknown
         elif (
             self.event == "pullRequestStatusChanged"
             and self.pullRequestStatus == "Closed"
@@ -288,7 +276,7 @@ class CodeCommitEvent:
                 f"{self.event_type}"
             )
         else:
-            raise NotImplementedError
+            return ""
 
     # test Event Type
     @cached_property
@@ -365,18 +353,18 @@ class CodeCommitEvent:
     def repo_name(self) -> str:
         return self.repositoryName
 
-    def assert_is_pr(self):
-        if not self.is_pr:
-            raise TypeError("Not a Pull Request Event")
-
     @cached_property
     def source_branch(self) -> str:
         if self.is_pr:
             return self.sourceReference
         elif self.is_commit:
             return self.referenceName
+        elif self.is_comment:  # pragma: no cover
+            return ""
+        elif self.is_approve_pr or self.is_approve_rule_override:
+            return self.sourceReference
         else:  # pragma: no cover
-            raise NotImplementedError
+            return ""
 
     @cached_property
     def source_commit(self) -> str:
@@ -384,15 +372,19 @@ class CodeCommitEvent:
             return self.sourceCommit
         elif self.is_commit:
             return self.commitId
+        elif self.is_comment:
+            return self.afterCommitId
+        elif self.is_approve_pr or self.is_approve_rule_override:
+            return self.sourceCommit
         else:  # pragma: no cover
-            raise NotImplementedError
+            return ""
 
     @cached_property
     def target_branch(self) -> str:
         if self.is_pr:
             return self.destinationReference
         else:  # pragma: no cover
-            raise NotImplementedError
+            return ""
 
     @cached_property
     def target_commit(self) -> str:
@@ -401,7 +393,7 @@ class CodeCommitEvent:
         elif self.is_commit:
             return self.oldCommitId
         else:  # pragma: no cover
-            raise NotImplementedError
+            return ""
 
     @cached_property
     def source_commit_message(self) -> str:  # pragma: no cover
@@ -416,12 +408,10 @@ class CodeCommitEvent:
 
     @cached_property
     def pr_id(self) -> str:
-        self.assert_is_pr()
         return self.pullRequestId
 
     @cached_property
     def pr_status(self) -> str:
-        self.assert_is_pr()
         return self.pullRequestStatus
 
     @cached_property
@@ -430,7 +420,6 @@ class CodeCommitEvent:
 
     @cached_property
     def pr_is_merged(self) -> bool:
-        self.assert_is_pr()
         return self.isMerged == "True"
 
     # test branch name
