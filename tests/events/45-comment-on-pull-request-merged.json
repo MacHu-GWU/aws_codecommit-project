@@ -1,0 +1,34 @@
+{
+    "account": "111122223333",
+    "detailType": "CodeCommit Comment on Pull Request",
+    "region": "us-east-1",
+    "source": "aws.codecommit",
+    "time": "2022-07-25T18:38:32Z",
+    "notificationRuleArn": "arn:aws:codestar-notifications:us-east-1:111122223333:notificationrule/0bcb473a29ad36160baa29e4954acb6c02106840",
+    "detail": {
+        "beforeCommitId": "ff846d735746166e878f1cad33e10f06397f7415",
+        "notificationBody": "A pull request event occurred in the following AWS CodeCommit repository: aws_codecommit-project. The user: arn:aws:iam::111122223333:user/sanhe made a comment or replied to a comment. The comment was made on the following Pull Request: 33. For more information, go to the AWS CodeCommit console https://us-east-1.console.aws.amazon.com/codesuite/codecommit/repositories/aws_codecommit-project/pull-requests/33/activity#c46ca896-e3cb-4cad-8223-cfe53923fe4f%3Ae1e1c70e-b235-45e7-8409-3dad1b0e8bb0?region=us-east-1",
+        "repositoryId": "73dedff5-98a7-4115-ae14-5598e60956d7",
+        "commentId": "c46ca896-e3cb-4cad-8223-cfe53923fe4f:e1e1c70e-b235-45e7-8409-3dad1b0e8bb0",
+        "afterCommitId": "58d8e81ea79c3b77f51a09e99fa5783d7085f730",
+        "callerUserArn": "arn:aws:iam::111122223333:user/sanhe",
+        "event": "commentOnPullRequestCreated",
+        "pullRequestId": "33",
+        "repositoryName": "aws_codecommit-project"
+    },
+    "resources": [
+        "arn:aws:codecommit:us-east-1:111122223333:aws_codecommit-project"
+    ],
+    "additionalAttributes": {
+        "commentedLine": null,
+        "resourceArn": "arn:aws:codecommit:us-east-1:111122223333:aws_codecommit-project",
+        "comments": [
+            {
+                "authorArn": "arn:aws:iam::111122223333:user/sanhe",
+                "commentText": "comment on merge let's see"
+            }
+        ],
+        "commentedLineNumber": null,
+        "filePath": null
+    }
+}
