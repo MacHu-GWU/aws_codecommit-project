@@ -177,6 +177,14 @@ def test_properties():
 
 def test_semantic_branch():
     # syntax sugar to make the code shorter
+    def pull_request():
+        return patch.object(
+            CodeCommitEvent,
+            "is_pr",
+            return_value=True,
+            new_callable=PropertyMock,
+        )
+
     def source_branch(value):
         return patch.object(
             CodeCommitEvent,
@@ -245,6 +253,23 @@ def test_semantic_branch():
 
     with target_branch("fix/"):
         assert new_event().target_is_hotfix_branch
+
+    with pull_request():
+        with target_branch("main"):
+            with source_branch("dev/"):
+                assert CCE().is_pr_from_develop_to_main
+                assert CCE().is_pr_from_feature_to_main is False
+                assert CCE().is_pr_from_hotfix_to_main is False
+
+            with source_branch("feat/"):
+                assert CCE().is_pr_from_develop_to_main is False
+                assert CCE().is_pr_from_feature_to_main
+                assert CCE().is_pr_from_hotfix_to_main is False
+
+            with source_branch("fix/"):
+                assert CCE().is_pr_from_develop_to_main is False
+                assert CCE().is_pr_from_feature_to_main is False
+                assert CCE().is_pr_from_hotfix_to_main
 
 
 def test_parse_commit_message():

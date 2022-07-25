@@ -435,64 +435,88 @@ class CodeCommitEvent:
 
     # test branch name
     @cached_property
-    def source_is_main_branch(self):
+    def source_is_main_branch(self) -> bool:
         return is_main_branch(self.source_branch)
 
     @cached_property
-    def source_is_develop_branch(self):
+    def source_is_develop_branch(self) -> bool:
         return is_develop_branch(self.source_branch)
 
     @cached_property
-    def source_is_feature_branch(self):
+    def source_is_feature_branch(self) -> bool:
         return is_feature_branch(self.source_branch)
 
     @cached_property
-    def source_is_release_branch(self):
+    def source_is_release_branch(self) -> bool:
         return is_release_branch(self.source_branch)
 
     @cached_property
-    def source_is_hotfix_branch(self):
+    def source_is_hotfix_branch(self) -> bool:
         return is_hotfix_branch(self.source_branch)
 
     @cached_property
-    def is_main_branch(self):
+    def is_main_branch(self) -> bool:
         return self.source_is_main_branch
 
     @cached_property
-    def is_develop_branch(self):
+    def is_develop_branch(self) -> bool:
         return self.source_is_develop_branch
 
     @cached_property
-    def is_feature_branch(self):
+    def is_feature_branch(self) -> bool:
         return self.source_is_feature_branch
 
     @cached_property
-    def is_release_branch(self):
+    def is_release_branch(self) -> bool:
         return self.source_is_release_branch
 
     @cached_property
-    def is_hotfix_branch(self):
+    def is_hotfix_branch(self) -> bool:
         return self.source_is_hotfix_branch
 
     @cached_property
-    def target_is_main_branch(self):
+    def target_is_main_branch(self) -> bool:
         return is_main_branch(self.target_branch)
 
     @cached_property
-    def target_is_develop_branch(self):
+    def target_is_develop_branch(self) -> bool:
         return is_develop_branch(self.target_branch)
 
     @cached_property
-    def target_is_feature_branch(self):
+    def target_is_feature_branch(self) -> bool:
         return is_feature_branch(self.target_branch)
 
     @cached_property
-    def target_is_release_branch(self):
+    def target_is_release_branch(self) -> bool:
         return is_release_branch(self.target_branch)
 
     @cached_property
-    def target_is_hotfix_branch(self):
+    def target_is_hotfix_branch(self) -> bool:
         return is_hotfix_branch(self.target_branch)
+
+    @cached_property
+    def is_pr_from_develop_to_main(self) -> bool:
+        return (
+            self.is_pr
+            and self.source_is_develop_branch
+            and self.target_is_main_branch
+        )
+
+    @cached_property
+    def is_pr_from_feature_to_main(self) -> bool:
+        return (
+            self.is_pr
+            and self.source_is_feature_branch
+            and self.target_is_main_branch
+        )
+
+    @cached_property
+    def is_pr_from_hotfix_to_main(self) -> bool:
+        return (
+            self.is_pr
+            and self.source_is_hotfix_branch
+            and self.target_is_main_branch
+        )
 
     # test commit message
     @cached_property
