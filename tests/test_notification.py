@@ -97,6 +97,7 @@ def test_env_var_seder():
 
 
 def test_event_type():
+    # positive case
     assert CCEventEnum.commit_to_master.is_commit_to_branch
     assert CCEventEnum.pull_request_commit_merge_to_master.is_commit_to_branch_from_merge
     assert CCEventEnum.branch_created.is_create_branch
@@ -114,6 +115,23 @@ def test_event_type():
     assert CCEventEnum.reply_to_comment_pr_updated.is_reply_to_comment
     assert CCEventEnum.approval.is_approve_pr
     assert CCEventEnum.approval_rule_override.is_approve_rule_override
+
+    #
+    assert CCEventEnum.pull_request_created.is_pr_closed is False
+    assert CCEventEnum.pull_request_created.is_pr_update is False
+    assert CCEventEnum.pull_request_created.is_pr_merged is False
+
+    assert CCEventEnum.pull_request_closed.is_pr_created is False
+    assert CCEventEnum.pull_request_closed.is_pr_update is False
+    assert CCEventEnum.pull_request_closed.is_pr_merged is False
+
+    assert CCEventEnum.pull_request_updated.is_pr_created is False
+    assert CCEventEnum.pull_request_updated.is_pr_closed is False
+    assert CCEventEnum.pull_request_updated.is_pr_merged is False
+
+    assert CCEventEnum.pull_request_merged.is_pr_created is False
+    assert CCEventEnum.pull_request_merged.is_pr_closed is False
+    assert CCEventEnum.pull_request_merged.is_pr_update is False
 
 
 def test_properties():
