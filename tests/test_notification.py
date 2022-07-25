@@ -123,8 +123,7 @@ def test_properties():
     assert CCEventEnum.pull_request_updated.pr_id
     assert CCEventEnum.pull_request_merged.pr_id
 
-    with pytest.raises(TypeError):
-        assert CCEventEnum.commit_to_master.pr_id
+    assert CCEventEnum.commit_to_master.pr_id == ""
 
     assert CCEventEnum.pull_request_created.is_pr_created_or_updated
     assert CCEventEnum.pull_request_updated.is_pr_created_or_updated
@@ -148,8 +147,7 @@ def test_properties():
     assert CCEventEnum.commit_to_master.source_is_main_branch
 
     assert CCEventEnum.commit_to_master.target_commit
-    with pytest.raises(NotImplementedError):
-        _ = CCEventEnum.commit_to_master.target_branch
+    assert CCEventEnum.commit_to_master.target_branch == ""
 
 
 def test_semantic_branch():
