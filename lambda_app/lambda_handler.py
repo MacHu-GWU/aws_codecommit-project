@@ -460,7 +460,8 @@ def handle_codecommit_event(cc_event: CodeCommitEvent):
                     "## 🌴 A build job is triggered, let's relax.",
                     "",
                     f"- commit id: [{job.before_commit_id[:7]}]({pr_commit_console_url})",
-                    f"- commit message: ``{job.commit_message.strip()}``",
+                    f"- commit message: \"{cc_event.commit_message.strip()}\"",
+                    f"- committer name: \"{cc_event.committer_name.strip()}\"",
                 ]),
             )
 
@@ -481,7 +482,8 @@ def handle_codecommit_event(cc_event: CodeCommitEvent):
                     "",
                     f"- job run: [{build_run_id}]({job.build_run_console_url})",
                     f"- commit id: [{job.after_commit_id[:7]}]({pr_commit_console_url})",
-                    f"- commit message: ``{job.commit_message.strip()}``",
+                    f"- commit message: \"{cc_event.commit_message.strip()}\"",
+                    f"- committer name: \"{cc_event.committer_name.strip()}\"",
                 ]),
             )
 

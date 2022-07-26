@@ -13,7 +13,7 @@ Since it is only used in the AWS Lambda Function, there's no need to use
 this inside of your application code.
 """
 
-from typing import List, Optional
+from typing import List, Tuple
 import dataclasses
 
 from .compat import need_cached_property
@@ -24,7 +24,7 @@ else:  # pragma: no cover
     from functools import cached_property
 
 try:
-    from .cc_client import get_commit_message
+    from .cc_client import get_commit_message_and_committer
 except ImportError:  # pragma: no cover
     pass
 except:  # pragma: no cover
@@ -407,14 +407,26 @@ class CodeCommitEvent:
             return ""
 
     @cached_property
-    def source_commit_message(self) -> str:  # pragma: no cover
-        return get_commit_message(
+    def _source_commit_message_and_committer(self) -> Tuple[str, str]:  # pragma: no cover
+        return get_commit_message_and_committer(
             repo_name=self.repo_name,
             commit_id=self.source_commit,
         )
 
     @cached_property
+    def source_commit_message(self) -> str:  # pragma: no cover
+        return self._source_commit_message_and_committer[0]
+
+    @cached_property
     def commit_message(self) -> str:  # pragma: no cover
+        return self.source_commit_message
+
+    @cached_property
+    def source_committer_name(self) -> str:  # pragma: no cover
+        return self._source_commit_message_and_committer[1]
+
+    @cached_property
+    def committer_name(self) -> str:  # pragma: no cover
         return self.source_commit_message
 
     @cached_property

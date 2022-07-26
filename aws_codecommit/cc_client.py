@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from typing import Optional
+from typing import Optional, Tuple
 from .boto_ses import cc_client
 
 
-def get_commit_message(
+def get_commit_message_and_committer(
     repo_name: str,
     commit_id: str,
-) -> str:  # pragma: no cover
+) -> Tuple[str, str]:  # pragma: no cover
     """
     Get a specific commit message for a commit.
 
@@ -19,7 +19,8 @@ def get_commit_message(
         commitId=commit_id,
     )
     commit_message = res["commit"]["message"].split("\n")[0]
-    return commit_message
+    committer_name = res["commit"]["committer"]["name"]
+    return commit_message, committer_name
 
 
 def get_last_commit_id_of_branch(
