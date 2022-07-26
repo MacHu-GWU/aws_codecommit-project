@@ -15,17 +15,12 @@ Release and Version History
 **Miscellaneous**
 
 
-0.0.6 (TODO)
+0.0.6 (2022-07-26)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **Features and Improvements**
 
 - add ``is_pr_from_specific_branch_to_specific_branch`` method.
-
-**Minor Improvements**
-
-**Bugfixes**
-
-**Miscellaneous**
+- add ``get_commit_message_and_committer`` function.
 
 
 0.0.5 (2022-07-24)
