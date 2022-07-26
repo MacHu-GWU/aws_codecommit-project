@@ -427,7 +427,7 @@ class CodeCommitEvent:
 
     @cached_property
     def committer_name(self) -> str:  # pragma: no cover
-        return self.source_commit_message
+        return self.source_committer_name
 
     @cached_property
     def pr_id(self) -> str:
