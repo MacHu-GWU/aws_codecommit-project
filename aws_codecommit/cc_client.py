@@ -18,7 +18,7 @@ def get_commit_message(
         repositoryName=repo_name,
         commitId=commit_id,
     )
-    commit_message = res["commit"]["message"].strip()
+    commit_message = res["commit"]["message"].split("\n")[0]
     return commit_message
 
 
