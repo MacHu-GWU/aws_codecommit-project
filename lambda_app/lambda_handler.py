@@ -457,7 +457,7 @@ def handle_codecommit_event(cc_event: CodeCommitEvent):
                 before_commit_id=job.before_commit_id,
                 after_commit_id=job.after_commit_id,
                 content="\n".join([
-                    "## 🌴 A build job is triggered, let's relax.",
+                    "## 🌴 A build run is triggered, let's relax.",
                     "",
                     f"- commit id: [{job.before_commit_id[:7]}]({pr_commit_console_url})",
                     f"- commit message: \"{cc_event.commit_message.strip()}\"",
@@ -478,9 +478,9 @@ def handle_codecommit_event(cc_event: CodeCommitEvent):
             update_comment(
                 comment_id=build_job_comment_id,
                 content="\n".join([
-                    "## 🌴 A build job is triggered, let's relax.",
+                    "## 🌴 A build run is triggered, let's relax.",
                     "",
-                    f"- job run: [{build_run_id}]({job.build_run_console_url})",
+                    f"- build run id: [{build_run_id}]({job.build_run_console_url})",
                     f"- commit id: [{job.after_commit_id[:7]}]({pr_commit_console_url})",
                     f"- commit message: \"{cc_event.commit_message.strip()}\"",
                     f"- committer name: \"{cc_event.committer_name.strip()}\"",
@@ -508,11 +508,11 @@ def handle_codebuild_event(cb_event: CodeBuildEvent):
         }
         comment_id = env_var["CI_DATA_COMMENT_ID"]
         if cb_event.build_status == "SUCCEEDED":
-            comment = "🟢 Build Job SUCCEEDED"
+            comment = "🟢 Build Run SUCCEEDED"
         elif cb_event.build_status == "FAILED":
-            comment = "🔴 Build Job FAILED"
+            comment = "🔴 Build Run FAILED"
         elif cb_event.build_status == "STOPPED":
-            comment = "⚫ Build Job STOPPED"
+            comment = "⚫ Build Run STOPPED"
         else:
             raise NotImplementedError
         reply_comment(comment_id=comment_id, content=comment)
