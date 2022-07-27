@@ -314,7 +314,10 @@ def do_we_trigger_build_job(cc_event: CodeCommitEvent) -> bool:
     """
     # won't trigger build direct commit
     if cc_event.is_commit:
-        logger.info(f"we don't trigger build job for event type {cc_event.event_type}")
+        logger.info(
+            f"we don't trigger build job for "
+            f"event type {cc_event.event_type!r} on {cc_event.source_branch}"
+        )
         return False
     # run build job if it is a Pull Request related event
     elif (
@@ -335,7 +338,7 @@ def do_we_trigger_build_job(cc_event: CodeCommitEvent) -> bool:
             logger.info(
                 "we DO NOT trigger build job "
                 "if PR target branch is not 'main' "
-                f"it is {cc_event.target_branch}"
+                f"it is {cc_event.target_branch!r}"
             )
             return False
 
@@ -369,7 +372,19 @@ def do_we_trigger_build_job(cc_event: CodeCommitEvent) -> bool:
                     )
                 )
             )
-
+            or
+            # on release branch, but has invalid commit message
+            (
+                cc_event.is_pr_created_or_updated
+                and cc_event.is_release_branch
+                and (
+                    not (
+                        cc_event.is_test_commit
+                        or cc_event.is_fix_commit
+                        or cc_event.is_rls_commit
+                    )
+                )
+            )
         ):
             logger.info(
                 "we DO NOT trigger build job "
@@ -426,7 +441,10 @@ class CIData:
 def handle_codecommit_event(cc_event: CodeCommitEvent):
     header2("handle CodeCommit event ...")
 
-    logger.info(f"detected event type = {cc_event.event_type}")
+    logger.info(
+        f"detected event type = {cc_event.event_type}, "
+        f"event description = {cc_event.event_description}"
+    )
 
     # identify if we trigger the job
     if do_we_trigger_build_job(cc_event) is not True:
