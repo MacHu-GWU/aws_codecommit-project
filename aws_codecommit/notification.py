@@ -275,7 +275,10 @@ class CodeCommitEvent:
                 f"commit message is {self.commit_message}."
             )
         elif self.is_comment:
-            return f"{self.event_type}"
+            return (
+                f"comment on pull request {self.pullRequestId!r} "
+                f"comment id is {self.commentId!r}"
+            )
         else:
             return ""
 
