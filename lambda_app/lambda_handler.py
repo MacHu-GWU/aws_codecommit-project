@@ -323,13 +323,25 @@ def do_we_trigger_build_job(cc_event: CodeCommitEvent) -> bool:
     elif (
         cc_event.is_pr_created
         or cc_event.is_pr_update
-        or cc_event.is_pr_merged
     ):
         # we don't trigger if commit message has 'NO BUILD'
         if cc_event.commit_message.startswith(CommitMessagePatternEnum.no_build):
             logger.info(
                 f"we DO NOT trigger build job for "
                 f"commit message {cc_event.commit_message!r}"
+            )
+            return False
+
+        # we don't trigger if source branch is not valid branch
+        if not (
+            cc_event.source_is_feature_branch
+            or is_layer_branch(cc_event.source_branch)
+            or cc_event.source_is_release_branch
+            or cc_event.source_is_hotfix_branch
+        ):
+            logger.info(
+                "we DO NOT trigger build job "
+                f"if PR source branch is {cc_event.target_branch!r}"
             )
             return False
 
@@ -348,7 +360,7 @@ def do_we_trigger_build_job(cc_event: CodeCommitEvent) -> bool:
                 cc_event.is_pr_created_or_updated
                 and cc_event.is_feature_branch
                 and (
-                    not (
+                    not ( # list of valid commit here
                         cc_event.is_feat_commit
                         or cc_event.is_build_commit
                         or cc_event.is_pub_commit
@@ -364,7 +376,7 @@ def do_we_trigger_build_job(cc_event: CodeCommitEvent) -> bool:
                 cc_event.is_pr_created_or_updated
                 and is_layer_branch(cc_event.source_branch)
                 and (
-                    not (
+                    not ( # list of valid commit here
                         cc_event.is_feat_commit
                         or cc_event.is_build_commit
                         or cc_event.is_pub_commit
@@ -378,10 +390,21 @@ def do_we_trigger_build_job(cc_event: CodeCommitEvent) -> bool:
                 cc_event.is_pr_created_or_updated
                 and cc_event.is_release_branch
                 and (
-                    not (
+                    not ( # list of valid commit here
                         cc_event.is_test_commit
                         or cc_event.is_fix_commit
                         or cc_event.is_rls_commit
+                    )
+                )
+            )
+            or
+            # on hotfix branch, but has invalid commit message
+            (
+                cc_event.is_pr_created_or_updated
+                and cc_event.is_hotfix_branch
+                and (
+                    not ( # list of valid commit here
+                        cc_event.is_fix_commit
                     )
                 )
             )
@@ -392,7 +415,9 @@ def do_we_trigger_build_job(cc_event: CodeCommitEvent) -> bool:
                 f"on {cc_event.source_branch!r} branch"
             )
             return False
-
+        return True
+    # always trigger on PR merge event
+    elif cc_event.is_pr_merged:
         return True
     # we don't trigger on other event
     elif (
