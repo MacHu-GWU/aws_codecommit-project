@@ -39,6 +39,12 @@ class Commit:
 
 
 class ConventionalCommitParser:
+    """
+    The customizable parser class. It tries to parse from
+    ``type1, type2 (scope): {description}
+
+    :param types: the list of conventional commit type you want to monitor
+    """
     def __init__(self, types: List[str]):
         self.types = types
         self.subject_regex = _get_subject_regex(types)
