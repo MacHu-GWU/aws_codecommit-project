@@ -48,12 +48,58 @@ Configurations:
 - Add Trigger: choose "SNS", choose the SNS topic that receives event from
     CodeCommit notification or CodeBuild notification.
 
-.. note::
+**NOTE**
 
-    Even you can see lots of other AWS Chalice related files, this Lambda
-    should be manually deployed in the console.
+Even you can see lots of other AWS Chalice related files,
+this Lambda should be manually deployed in the console.
 
-TODO: explain how to configure CodeCommit / CodeBuild / SNS topic
+**Configure SNS**
+
+1. Goto AWS SNS Console https://us-east-1.console.aws.amazon.com/sns/v3/home?region=us-east-1#/topics
+    click "Create Topic"
+2. Set
+    - Type: "Standard"
+    - Name: just give it a name, I use "cicd"
+    - Access Policy: click advance and paste the following JSON::
+
+        {
+            "Version": "2008-10-17",
+            "Id": "__default_policy_ID",
+            "Statement": [
+                {
+                    "Sid": "__default_statement_ID",
+                    "Effect": "Allow",
+                    "Principal": {
+                        "Service": "codestar-notifications.amazonaws.com"
+                    },
+                    "Action": "SNS:Publish",
+                    "Resource": "arn:aws:sns:{your_aws_region}:{your_aws_account_id}:{your_sns_topic_name}"
+                }
+            ]
+        }
+    - Leave other option as default
+
+**Configure CodeBuild**
+
+We would like to let CodeBuild to send events to SNS topic, so we can
+react accordingly.
+
+1. Go to your CodeBuild project, click on "Notify" -> "Create notification rule"
+2. Give it a name, I recommend to use your CodeBuild project name as prefix,
+    like this "{codebuild_project_name}-all-event"
+3. Detail type: Full -> Select All
+4. Targets: choose the SNS topic you just created.
+
+**Configure CodeCommit**
+
+We would like to let CodeCommit event to send events to SNS topic, so we can
+react accordingly.
+
+1. Go to your CodeCommit repository, click on "Notify" -> "Create notification rule"
+2. Give it a name, I recommend to use your CodeCommit repository name as prefix,
+    like this "{codecommit_repository_name}-all-event"
+3. Detail type: Full -> Select All
+4. Targets: choose the SNS topic you just created.
 """
 
 from typing import Optional, List
@@ -98,7 +144,7 @@ def header2(msg: str):
 
 
 class CommitMessagePatternEnum:
-    no_build = "NO BUILD"
+    no_ci = "no ci"
 
 
 class EventSourceEnum:
@@ -325,7 +371,7 @@ def do_we_trigger_build_job(cc_event: CodeCommitEvent) -> bool:
         or cc_event.is_pr_update
     ):
         # we don't trigger if commit message has 'NO BUILD'
-        if cc_event.commit_message.startswith(CommitMessagePatternEnum.no_build):
+        if cc_event.commit_message.startswith(CommitMessagePatternEnum.no_ci):
             logger.info(
                 f"we DO NOT trigger build job for "
                 f"commit message {cc_event.commit_message!r}"
@@ -360,7 +406,7 @@ def do_we_trigger_build_job(cc_event: CodeCommitEvent) -> bool:
                 cc_event.is_pr_created_or_updated
                 and cc_event.is_feature_branch
                 and (
-                    not ( # list of valid commit here
+                    not (  # list of valid commit here
                         cc_event.is_feat_commit
                         or cc_event.is_build_commit
                         or cc_event.is_pub_commit
@@ -376,7 +422,7 @@ def do_we_trigger_build_job(cc_event: CodeCommitEvent) -> bool:
                 cc_event.is_pr_created_or_updated
                 and is_layer_branch(cc_event.source_branch)
                 and (
-                    not ( # list of valid commit here
+                    not (  # list of valid commit here
                         cc_event.is_feat_commit
                         or cc_event.is_build_commit
                         or cc_event.is_pub_commit
@@ -390,7 +436,7 @@ def do_we_trigger_build_job(cc_event: CodeCommitEvent) -> bool:
                 cc_event.is_pr_created_or_updated
                 and cc_event.is_release_branch
                 and (
-                    not ( # list of valid commit here
+                    not (  # list of valid commit here
                         cc_event.is_test_commit
                         or cc_event.is_fix_commit
                         or cc_event.is_rls_commit
@@ -403,7 +449,7 @@ def do_we_trigger_build_job(cc_event: CodeCommitEvent) -> bool:
                 cc_event.is_pr_created_or_updated
                 and cc_event.is_hotfix_branch
                 and (
-                    not ( # list of valid commit here
+                    not (  # list of valid commit here
                         cc_event.is_fix_commit
                     )
                 )
@@ -436,6 +482,9 @@ CI_DATA_PREFIX = "CI_DATA_"
 
 @dataclasses.dataclass
 class CIData:
+    """
+    CI related data, will be available in environment variable.
+    """
     commit_message: str = ""
     comment_id: str = ""
 
@@ -464,6 +513,12 @@ class CIData:
 
 
 def handle_codecommit_event(cc_event: CodeCommitEvent):
+    """
+    What to do about codecommit event
+
+    :param cc_event:
+    :return:
+    """
     header2("handle CodeCommit event ...")
 
     logger.info(
@@ -513,7 +568,7 @@ def handle_codecommit_event(cc_event: CodeCommitEvent):
 
             # pass in the comment id into the build job env var,
             # so we can reply to the thread during the build job run
-            ci_data.add_to_job_env_var(job, prefix="CI_DATA_")
+            ci_data.add_to_job_env_var(job, prefix=CI_DATA_PREFIX)
 
             build_run_id = job.start_build()
 
@@ -535,6 +590,15 @@ def handle_codecommit_event(cc_event: CodeCommitEvent):
 
 
 def handle_codebuild_event(cb_event: CodeBuildEvent):
+    """
+    What to do about codebuild event?
+
+    1. When a code build run is started or the status is changed, we want to
+        automatically put a comment to the CodeCommit activity in PR.
+        We need to know the ``comment_id`` explicitly. This ``comment_id``
+        is provided by the previous lambda function invoke that actually did the
+        ``start_build`` API call.
+    """
     logger.info("handle CodeBuild event ...")
 
     # analyze event
@@ -549,7 +613,7 @@ def handle_codebuild_event(cb_event: CodeBuildEvent):
             dct["name"]: dct["value"]
             for dct in res["builds"][0]["environment"]["environmentVariables"]
         }
-        comment_id = env_var["CI_DATA_COMMENT_ID"]
+        comment_id = env_var[f"{CI_DATA_PREFIX}COMMENT_ID"]
         if cb_event.build_status == "SUCCEEDED":
             comment = "🟢 Build Run SUCCEEDED"
         elif cb_event.build_status == "FAILED":
@@ -562,6 +626,9 @@ def handle_codebuild_event(cb_event: CodeBuildEvent):
 
 
 def encode_partition_key(dt: datetime) -> str:
+    """
+    Figure out the s3 partition part based on the given datetime.
+    """
     return "/".join([
         f"year={dt.year}/"
         f"month={str(dt.month).zfill(2)}/"
@@ -570,6 +637,8 @@ def encode_partition_key(dt: datetime) -> str:
 
 
 def lambda_handler(event: dict, context):
+    """
+    """
     header1("START")
     header2("received SNS event:")
     ci_event = json.loads(event["Records"][0]["Sns"]["Message"])
