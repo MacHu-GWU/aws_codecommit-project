@@ -206,7 +206,7 @@ def test_semantic_branch():
     def pull_request():
         return patch.object(
             CodeCommitEvent,
-            "is_pr",
+            "is_pr_event",
             return_value=True,
             new_callable=PropertyMock,
         )
