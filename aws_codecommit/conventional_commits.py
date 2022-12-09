@@ -171,6 +171,17 @@ def is_doc_commit(commit_message: str) -> bool:
     )
 
 
+def is_test_commit(commit_message: str) -> bool:
+    return is_certain_conventional_commit(
+        commit_message, [
+            SemanticCommitEnum.test.value,
+            SemanticCommitEnum.utest.value,
+            SemanticCommitEnum.itest.value,
+            SemanticCommitEnum.ltest.value,
+        ]
+    )
+
+
 def is_utest_commit(commit_message: str) -> bool:
     return is_certain_conventional_commit(
         commit_message, SemanticCommitEnum.utest.value

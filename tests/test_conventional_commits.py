@@ -9,6 +9,7 @@ from aws_codecommit.conventional_commits import (
     is_feat_commit,
     is_fix_commit,
     is_doc_commit,
+    is_test_commit,
     is_utest_commit,
     is_itest_commit,
     is_ltest_commit,
@@ -105,6 +106,23 @@ def test_tokenize(before: str, after: T.List[str]):
                 (is_fix_commit, True),
             ],
         ),
+        # do everything
+        (
+            "feat, test, build: do everything",
+            ConventionalCommit(
+                types=[
+                    "feat", "test", "build",
+                ],
+                description="do everything",
+                scope=None,
+                breaking=None,
+            ),
+            [
+                (is_feat_commit, True),
+                (is_test_commit, True),
+                (is_build_commit, True),
+            ],
+        )
     ],
 )
 def test_parse_message(
@@ -120,4 +138,4 @@ def test_parse_message(
 if __name__ == "__main__":
     from aws_codecommit.tests import run_cov_test
 
-    run_cov_test(__file__, "aws_codecommit.conventional_commits")
+    run_cov_test(__file__, "aws_codecommit.conventional_commits", preview=False)
