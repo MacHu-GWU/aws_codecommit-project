@@ -5,7 +5,6 @@ omit =
     aws_codecommit/_version.py
     aws_codecommit/cc_client.py
     aws_codecommit/compat.py
-    aws_codecommit/conventional_commits.py
     aws_codecommit/tests/*
 
 [report]

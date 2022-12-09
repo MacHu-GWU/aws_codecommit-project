@@ -128,7 +128,7 @@ semantic_commit_mapper = SemanticCommitEnum.to_mapper()
 parser = ConventionalCommitParser(types=SemanticCommitEnum.to_str_list())
 
 
-def is_certain_conventional_commit(
+def is_certain_semantic_commit(
     commit_message: str,
     stub: T.Union[str, T.List[str]],
 ) -> bool:
@@ -151,28 +151,28 @@ def is_certain_conventional_commit(
 
 
 def is_feat_commit(commit_message: str) -> bool:
-    return is_certain_conventional_commit(
+    return is_certain_semantic_commit(
         commit_message,
         [SemanticCommitEnum.feat.value, SemanticCommitEnum.feature.value],
     )
 
 
 def is_fix_commit(commit_message: str) -> bool:
-    return is_certain_conventional_commit(
+    return is_certain_semantic_commit(
         commit_message,
         SemanticCommitEnum.fix.value,
     )
 
 
 def is_doc_commit(commit_message: str) -> bool:
-    return is_certain_conventional_commit(
+    return is_certain_semantic_commit(
         commit_message,
         SemanticCommitEnum.doc.value,
     )
 
 
 def is_test_commit(commit_message: str) -> bool:
-    return is_certain_conventional_commit(
+    return is_certain_semantic_commit(
         commit_message, [
             SemanticCommitEnum.test.value,
             SemanticCommitEnum.utest.value,
@@ -183,41 +183,41 @@ def is_test_commit(commit_message: str) -> bool:
 
 
 def is_utest_commit(commit_message: str) -> bool:
-    return is_certain_conventional_commit(
+    return is_certain_semantic_commit(
         commit_message, SemanticCommitEnum.utest.value
     )
 
 
 def is_itest_commit(commit_message: str) -> bool:
-    return is_certain_conventional_commit(
+    return is_certain_semantic_commit(
         commit_message,
         SemanticCommitEnum.itest.value,
     )
 
 
 def is_ltest_commit(commit_message: str) -> bool:
-    return is_certain_conventional_commit(
+    return is_certain_semantic_commit(
         commit_message,
         SemanticCommitEnum.ltest.value,
     )
 
 
 def is_build_commit(commit_message: str) -> bool:
-    return is_certain_conventional_commit(
+    return is_certain_semantic_commit(
         commit_message,
         SemanticCommitEnum.build.value,
     )
 
 
 def is_publish_commit(commit_message: str) -> bool:
-    return is_certain_conventional_commit(
+    return is_certain_semantic_commit(
         commit_message,
         [SemanticCommitEnum.pub.value, SemanticCommitEnum.publish.value],
     )
 
 
 def is_release_commit(commit_message: str) -> bool:
-    return is_certain_conventional_commit(
+    return is_certain_semantic_commit(
         commit_message,
         [SemanticCommitEnum.rls.value, SemanticCommitEnum.release.value],
     )

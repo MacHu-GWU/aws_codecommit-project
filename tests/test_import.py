@@ -6,7 +6,12 @@ from pytest import raises, approx
 
 def test():
     import aws_codecommit
-    pass
+
+    _ = aws_codecommit.CodeCommitEvent
+    _ = aws_codecommit.SemanticBranchEnum
+    _ = aws_codecommit.is_certain_semantic_branch
+    _ = aws_codecommit.SemanticCommitEnum
+    _ = aws_codecommit.is_certain_semantic_commit
 
 
 if __name__ == "__main__":
