@@ -11,6 +11,8 @@ def test():
     _ = aws_codecommit.SemanticBranchEnum
     _ = aws_codecommit.is_certain_semantic_branch
     _ = aws_codecommit.SemanticCommitEnum
+    _ = aws_codecommit.ConventionalCommitParser
+    _ = aws_codecommit.default_parser
     _ = aws_codecommit.is_certain_semantic_commit
 
 

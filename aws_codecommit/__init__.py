@@ -24,6 +24,8 @@ try:
     )
     from .conventional_commits import (
         SemanticCommitEnum,
+        ConventionalCommitParser,
+        default_parser,
         is_certain_semantic_commit,
     )
 except ImportError as e: # pragma: no cover

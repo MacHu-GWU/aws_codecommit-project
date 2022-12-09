@@ -5,7 +5,7 @@ import typing as T
 from aws_codecommit.conventional_commits import (
     tokenize,
     ConventionalCommit,
-    parser,
+    default_parser,
     is_feat_commit,
     is_fix_commit,
     is_doc_commit,
@@ -130,7 +130,7 @@ def test_parse_message(
     commit: ConventionalCommit,
     is_test_pairs: T.List[T.Tuple[T.Callable, bool]],
 ):
-    assert parser.parse_message(msg) == commit
+    assert default_parser.parse_message(msg) == commit
     for func, flag in is_test_pairs:
         assert func(msg) is flag
 

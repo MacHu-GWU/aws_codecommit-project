@@ -125,7 +125,7 @@ class SemanticCommitEnum(enum.Enum):
 semantic_commit_mapper = SemanticCommitEnum.to_mapper()
 
 
-parser = ConventionalCommitParser(types=SemanticCommitEnum.to_str_list())
+default_parser = ConventionalCommitParser(types=SemanticCommitEnum.to_str_list())
 
 
 def is_certain_semantic_commit(
@@ -138,7 +138,7 @@ def is_certain_semantic_commit(
     :param semantic_commit_stub:
     :return:
     """
-    commit = parser.parse_message(commit_message)
+    commit = default_parser.parse_message(commit_message)
     if commit is None:
         return False
     if isinstance(stub, str):

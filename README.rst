@@ -1,5 +1,5 @@
 
-.. image:: https://readthedocs.org/projects/aws_codecommit/badge/?version=latest
+.. .. image:: https://readthedocs.org/projects/aws_codecommit/badge/?version=latest
     :target: https://aws_codecommit.readthedocs.io/index.html
     :alt: Documentation Status
 
@@ -23,14 +23,13 @@
 
 ------
 
-
-.. image:: https://img.shields.io/badge/Link-Document-blue.svg
+.. .. image:: https://img.shields.io/badge/Link-Document-blue.svg
     :target: https://aws_codecommit.readthedocs.io/index.html
 
-.. image:: https://img.shields.io/badge/Link-API-blue.svg
+.. .. image:: https://img.shields.io/badge/Link-API-blue.svg
     :target: https://aws_codecommit.readthedocs.io/py-modindex.html
 
-.. image:: https://img.shields.io/badge/Link-Source_Code-blue.svg
+.. .. image:: https://img.shields.io/badge/Link-Source_Code-blue.svg
     :target: https://aws_codecommit.readthedocs.io/py-modindex.html
 
 .. image:: https://img.shields.io/badge/Link-Install-blue.svg
@@ -51,13 +50,14 @@
 
 Welcome to ``aws_codecommit`` Documentation
 ==============================================================================
-
 ``aws_codecommit`` aim to extract more potential from AWS CodeCommit.
 
 Features:
 
-- Git API for Human: let machine to commit code for you.
-- Git Event hook automation: make AWS CodeCommit works with CI systems.
+- semantic commit
+- semantic branch
+- codecommit notification event parser
+- better codecommit boto API
 
 
 .. _install:

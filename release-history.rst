@@ -4,7 +4,7 @@ Release and Version History
 ==============================================================================
 
 
-0.0.8 (TODO)
+Backlog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **Features and Improvements**
 
@@ -13,6 +13,21 @@ Release and Version History
 **Bugfixes**
 
 **Miscellaneous**
+
+
+1.0.1 (2022-12-09)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**Features and Improvements**
+
+- First API stable release
+- add the following API:
+    - ``aws_codecommit.CodeCommitEvent``
+    - ``aws_codecommit.SemanticBranchEnum``
+    - ``aws_codecommit.is_certain_semantic_branch``
+    - ``aws_codecommit.SemanticCommitEnum``
+    - ``aws_codecommit.is_certain_semantic_commit``
+    - ``aws_codecommit.ConventionalCommitParser``
+    - ``aws_codecommit.default_parser``
 
 
 0.0.7 (2022-08-09)
