@@ -81,39 +81,39 @@ class CodeCommitEvent:
     Data container class to represent a CodeCommit notification event.
     """
 
-    afterCommitId: str = ""
-    approvalStatus: str = ""
-    author: str = ""
-    beforeCommitId: str = ""
-    callerUserArn: str = ""
-    commentId: str = ""
-    commitId: str = ""
-    creationDate: str = ""
-    destinationCommit: str = ""
-    destinationCommitId: str = ""
-    destinationReference: str = ""
-    event: str = ""
-    isMerged: str = ""
-    inReplyTo: str = ""
-    lastModifiedDate: str = ""
-    mergeOption: str = ""
-    notificationBody: str = ""
-    oldCommitId: str = ""
-    overrideStatus: str = ""
-    pullRequestId: str = ""
-    pullRequestStatus: str = ""
-    referenceFullName: str = ""
-    referenceName: str = ""
-    referenceType: str = ""
-    repositoryId: str = ""
-    repositoryName: str = ""
-    revisionId: str = ""
-    sourceCommit: str = ""
-    sourceCommitId: str = ""
-    sourceReference: str = ""
-    title: str = ""
-    aws_account_id: str = ""
-    aws_region: str = ""
+    afterCommitId: str = dataclasses.field(default="")
+    approvalStatus: str = dataclasses.field(default="")
+    author: str = dataclasses.field(default="")
+    beforeCommitId: str = dataclasses.field(default="")
+    callerUserArn: str = dataclasses.field(default="")
+    commentId: str = dataclasses.field(default="")
+    commitId: str = dataclasses.field(default="")
+    creationDate: str = dataclasses.field(default="")
+    destinationCommit: str = dataclasses.field(default="")
+    destinationCommitId: str = dataclasses.field(default="")
+    destinationReference: str = dataclasses.field(default="")
+    event: str = dataclasses.field(default="")
+    isMerged: str = dataclasses.field(default="")
+    inReplyTo: str = dataclasses.field(default="")
+    lastModifiedDate: str = dataclasses.field(default="")
+    mergeOption: str = dataclasses.field(default="")
+    notificationBody: str = dataclasses.field(default="")
+    oldCommitId: str = dataclasses.field(default="")
+    overrideStatus: str = dataclasses.field(default="")
+    pullRequestId: str = dataclasses.field(default="")
+    pullRequestStatus: str = dataclasses.field(default="")
+    referenceFullName: str = dataclasses.field(default="")
+    referenceName: str = dataclasses.field(default="")
+    referenceType: str = dataclasses.field(default="")
+    repositoryId: str = dataclasses.field(default="")
+    repositoryName: str = dataclasses.field(default="")
+    revisionId: str = dataclasses.field(default="")
+    sourceCommit: str = dataclasses.field(default="")
+    sourceCommitId: str = dataclasses.field(default="")
+    sourceReference: str = dataclasses.field(default="")
+    title: str = dataclasses.field(default="")
+    aws_account_id: str = dataclasses.field(default="")
+    aws_region: str = dataclasses.field(default="")
 
     @classmethod
     def from_event(cls, event: dict) -> "CodeCommitEvent":
@@ -190,13 +190,13 @@ class CodeCommitEvent:
 
     @cached_property
     def event_description(self) -> str:  # pragma: no cover
-        if self.is_commit:
+        if self.is_commit_event:
             return (
                 f"commit to {self.source_branch!r} branch, "
                 f"commit id is {self.source_commit}, "
                 f"commit message is {self.commit_message}."
             )
-        elif self.is_pr:
+        elif self.is_pr_event:
             return (
                 f"{self.event_type} "
                 f"from {self.source_branch!r} branch to "
@@ -204,7 +204,7 @@ class CodeCommitEvent:
                 f"commit id is {self.source_commit}, "
                 f"commit message is {self.commit_message}."
             )
-        elif self.is_comment:
+        elif self.is_comment_event:
             return (
                 f"comment on pull request {self.pullRequestId!r} "
                 f"comment id is {self.commentId!r}"
@@ -214,77 +214,79 @@ class CodeCommitEvent:
 
     # test Event Type
     @cached_property
-    def is_commit_to_branch(self) -> bool:
+    def is_commit_to_branch_event(self) -> bool:
         return self.event_type == CodeCommitEventTypeEnum.commit_to_branch
 
     @cached_property
-    def is_commit_to_branch_from_merge(self) -> bool:
+    def is_commit_to_branch_from_merge_event(self) -> bool:
         return self.event_type == CodeCommitEventTypeEnum.commit_to_branch_from_merge
 
     @cached_property
-    def is_commit(self) -> bool:
-        return self.is_commit_to_branch or self.is_commit_to_branch_from_merge
-
-    @cached_property
-    def is_create_branch(self) -> bool:
-        return self.event_type == CodeCommitEventTypeEnum.create_branch
-
-    @cached_property
-    def is_delete_branch(self) -> bool:
-        return self.event_type == CodeCommitEventTypeEnum.delete_branch
-
-    @cached_property
-    def is_pr_created(self) -> bool:
-        return self.event_type == CodeCommitEventTypeEnum.pr_created
-
-    @cached_property
-    def is_pr_closed(self) -> bool:
-        return self.event_type == CodeCommitEventTypeEnum.pr_closed
-
-    @cached_property
-    def is_pr_update(self) -> bool:
-        return self.event_type == CodeCommitEventTypeEnum.pr_updated
-
-    @cached_property
-    def is_pr_merged(self) -> bool:
-        return self.event_type == CodeCommitEventTypeEnum.pr_merged
-
-    @cached_property
-    def is_comment_on_pr_created(self) -> bool:
-        return self.event_type == CodeCommitEventTypeEnum.comment_on_pr_created
-
-    @cached_property
-    def is_comment_on_pr_updated(self) -> bool:
-        return self.event_type == CodeCommitEventTypeEnum.comment_on_pr_updated
-
-    @cached_property
-    def is_reply_to_comment(self) -> bool:
-        return self.event_type == CodeCommitEventTypeEnum.reply_to_comment
-
-    @cached_property
-    def is_comment(self) -> bool:
-        return self.is_comment_on_pr_created or self.is_reply_to_comment
-
-    @cached_property
-    def is_approve_pr(self) -> bool:
-        return self.event_type == CodeCommitEventTypeEnum.approve_pr
-
-    @cached_property
-    def is_approve_rule_override(self) -> bool:
-        return self.event_type == CodeCommitEventTypeEnum.approve_rule_override
-
-    @cached_property
-    def is_pr(self) -> bool:
+    def is_commit_event(self) -> bool:
         return (
-            self.is_pr_created
-            or self.is_pr_update
-            or self.is_pr_merged
-            or self.is_pr_closed
+            self.is_commit_to_branch_event or self.is_commit_to_branch_from_merge_event
         )
 
     @cached_property
-    def is_pr_created_or_updated(self) -> bool:
-        return self.is_pr_created or self.is_pr_update
+    def is_create_branch_event(self) -> bool:
+        return self.event_type == CodeCommitEventTypeEnum.create_branch
+
+    @cached_property
+    def is_delete_branch_event(self) -> bool:
+        return self.event_type == CodeCommitEventTypeEnum.delete_branch
+
+    @cached_property
+    def is_pr_created_event(self) -> bool:
+        return self.event_type == CodeCommitEventTypeEnum.pr_created
+
+    @cached_property
+    def is_pr_closed_event(self) -> bool:
+        return self.event_type == CodeCommitEventTypeEnum.pr_closed
+
+    @cached_property
+    def is_pr_update_event(self) -> bool:
+        return self.event_type == CodeCommitEventTypeEnum.pr_updated
+
+    @cached_property
+    def is_pr_merged_event(self) -> bool:
+        return self.event_type == CodeCommitEventTypeEnum.pr_merged
+
+    @cached_property
+    def is_comment_on_pr_created_event(self) -> bool:
+        return self.event_type == CodeCommitEventTypeEnum.comment_on_pr_created
+
+    @cached_property
+    def is_comment_on_pr_updated_event(self) -> bool:
+        return self.event_type == CodeCommitEventTypeEnum.comment_on_pr_updated
+
+    @cached_property
+    def is_reply_to_comment_event(self) -> bool:
+        return self.event_type == CodeCommitEventTypeEnum.reply_to_comment
+
+    @cached_property
+    def is_comment_event(self) -> bool:
+        return self.is_comment_on_pr_created_event or self.is_reply_to_comment_event
+
+    @cached_property
+    def is_approve_pr_event(self) -> bool:
+        return self.event_type == CodeCommitEventTypeEnum.approve_pr
+
+    @cached_property
+    def is_approve_rule_override_event(self) -> bool:
+        return self.event_type == CodeCommitEventTypeEnum.approve_rule_override
+
+    @cached_property
+    def is_pr_event(self) -> bool:
+        return (
+            self.is_pr_created_event
+            or self.is_pr_update_event
+            or self.is_pr_merged_event
+            or self.is_pr_closed_event
+        )
+
+    @cached_property
+    def is_pr_created_or_updated_event(self) -> bool:
+        return self.is_pr_created_event or self.is_pr_update_event
 
     # additional property
     @cached_property
@@ -293,48 +295,48 @@ class CodeCommitEvent:
 
     @cached_property
     def source_branch(self) -> str:
-        if self.is_pr:
+        if self.is_pr_event:
             return self.sourceReference.replace("refs/heads/", "", 1)
-        elif self.is_commit:
+        elif self.is_commit_event:
             return self.referenceName
-        elif self.is_comment:  # pragma: no cover
+        elif self.is_comment_event:  # pragma: no cover
             return ""
-        elif self.is_approve_pr or self.is_approve_rule_override:
+        elif self.is_approve_pr_event or self.is_approve_rule_override_event:
             return self.sourceReference.replace("refs/heads/", "", 1)
         else:  # pragma: no cover
             return ""
 
     @cached_property
     def source_commit(self) -> str:
-        if self.is_pr:
+        if self.is_pr_event:
             return self.sourceCommit
-        elif self.is_commit:
+        elif self.is_commit_event:
             return self.commitId
-        elif self.is_comment:
+        elif self.is_comment_event:
             return self.afterCommitId
-        elif self.is_approve_pr or self.is_approve_rule_override:
+        elif self.is_approve_pr_event or self.is_approve_rule_override_event:
             return self.sourceCommit
         else:  # pragma: no cover
             return ""
 
     @cached_property
     def target_branch(self) -> str:
-        if self.is_pr:
+        if self.is_pr_event:
             return self.destinationReference.replace("refs/heads/", "", 1)
-        elif self.is_approve_pr or self.is_approve_rule_override:
+        elif self.is_approve_pr_event or self.is_approve_rule_override_event:
             return self.destinationReference.replace("refs/heads/", "", 1)
         else:  # pragma: no cover
             return ""
 
     @cached_property
     def target_commit(self) -> str:
-        if self.is_pr:
+        if self.is_pr_event:
             return self.destinationCommit
-        elif self.is_commit:
+        elif self.is_commit_event:
             return self.oldCommitId
-        elif self.is_comment:
+        elif self.is_comment_event:
             return self.beforeCommitId
-        elif self.is_approve_pr or self.is_approve_rule_override:
+        elif self.is_approve_pr_event or self.is_approve_rule_override_event:
             return self.destinationCommit
         else:  # pragma: no cover
             return ""
@@ -383,18 +385,26 @@ class CodeCommitEvent:
     @cached_property
     def is_pr_from_develop_to_main(self) -> bool:
         return (
-            self.is_pr and self.source_is_develop_branch and self.target_is_main_branch
+            self.is_pr_event
+            and self.source_is_develop_branch
+            and self.target_is_main_branch
         )
 
     @cached_property
     def is_pr_from_feature_to_main(self) -> bool:
         return (
-            self.is_pr and self.source_is_feature_branch and self.target_is_main_branch
+            self.is_pr_event
+            and self.source_is_feature_branch
+            and self.target_is_main_branch
         )
 
     @cached_property
     def is_pr_from_hotfix_to_main(self) -> bool:
-        return self.is_pr and self.source_is_fix_branch and self.target_is_main_branch
+        return (
+            self.is_pr_event
+            and self.source_is_fix_branch
+            and self.target_is_main_branch
+        )
 
     # test branch name
     @cached_property

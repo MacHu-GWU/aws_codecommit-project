@@ -104,42 +104,42 @@ def test_env_var_seder():
 
 def test_event_type():
     # positive case
-    assert CCEventEnum.commit_to_master.is_commit_to_branch
+    assert CCEventEnum.commit_to_master.is_commit_to_branch_event
     assert (
-        CCEventEnum.pull_request_commit_merge_to_master.is_commit_to_branch_from_merge
+        CCEventEnum.pull_request_commit_merge_to_master.is_commit_to_branch_from_merge_event
     )
-    assert CCEventEnum.branch_created.is_create_branch
-    assert CCEventEnum.branch_updated.is_commit_to_branch
-    assert CCEventEnum.branch_deleted.is_delete_branch
-    assert CCEventEnum.pull_request_created.is_pr_created
-    assert CCEventEnum.pull_request_closed.is_pr_closed
-    assert CCEventEnum.pull_request_updated.is_pr_update
-    assert CCEventEnum.pull_request_merged.is_pr_merged
-    assert CCEventEnum.comment_on_pull_request_specific_file.is_comment_on_pr_created
-    assert CCEventEnum.comment_on_pull_request_overall.is_comment_on_pr_created
-    assert CCEventEnum.reply_to_comment_pr_created.is_reply_to_comment
-    assert CCEventEnum.comment_on_pull_request_updated.is_comment_on_pr_updated
-    assert CCEventEnum.comment_on_pull_request_merged.is_comment_on_pr_created
-    assert CCEventEnum.reply_to_comment_pr_updated.is_reply_to_comment
-    assert CCEventEnum.approval.is_approve_pr
-    assert CCEventEnum.approval_rule_override.is_approve_rule_override
+    assert CCEventEnum.branch_created.is_create_branch_event
+    assert CCEventEnum.branch_updated.is_commit_to_branch_event
+    assert CCEventEnum.branch_deleted.is_delete_branch_event
+    assert CCEventEnum.pull_request_created.is_pr_created_event
+    assert CCEventEnum.pull_request_closed.is_pr_closed_event
+    assert CCEventEnum.pull_request_updated.is_pr_update_event
+    assert CCEventEnum.pull_request_merged.is_pr_merged_event
+    assert CCEventEnum.comment_on_pull_request_specific_file.is_comment_on_pr_created_event
+    assert CCEventEnum.comment_on_pull_request_overall.is_comment_on_pr_created_event
+    assert CCEventEnum.reply_to_comment_pr_created.is_reply_to_comment_event
+    assert CCEventEnum.comment_on_pull_request_updated.is_comment_on_pr_updated_event
+    assert CCEventEnum.comment_on_pull_request_merged.is_comment_on_pr_created_event
+    assert CCEventEnum.reply_to_comment_pr_updated.is_reply_to_comment_event
+    assert CCEventEnum.approval.is_approve_pr_event
+    assert CCEventEnum.approval_rule_override.is_approve_rule_override_event
 
     #
-    assert CCEventEnum.pull_request_created.is_pr_closed is False
-    assert CCEventEnum.pull_request_created.is_pr_update is False
-    assert CCEventEnum.pull_request_created.is_pr_merged is False
+    assert CCEventEnum.pull_request_created.is_pr_closed_event is False
+    assert CCEventEnum.pull_request_created.is_pr_update_event is False
+    assert CCEventEnum.pull_request_created.is_pr_merged_event is False
 
-    assert CCEventEnum.pull_request_closed.is_pr_created is False
-    assert CCEventEnum.pull_request_closed.is_pr_update is False
-    assert CCEventEnum.pull_request_closed.is_pr_merged is False
+    assert CCEventEnum.pull_request_closed.is_pr_created_event is False
+    assert CCEventEnum.pull_request_closed.is_pr_update_event is False
+    assert CCEventEnum.pull_request_closed.is_pr_merged_event is False
 
-    assert CCEventEnum.pull_request_updated.is_pr_created is False
-    assert CCEventEnum.pull_request_updated.is_pr_closed is False
-    assert CCEventEnum.pull_request_updated.is_pr_merged is False
+    assert CCEventEnum.pull_request_updated.is_pr_created_event is False
+    assert CCEventEnum.pull_request_updated.is_pr_closed_event is False
+    assert CCEventEnum.pull_request_updated.is_pr_merged_event is False
 
-    assert CCEventEnum.pull_request_merged.is_pr_created is False
-    assert CCEventEnum.pull_request_merged.is_pr_closed is False
-    assert CCEventEnum.pull_request_merged.is_pr_update is False
+    assert CCEventEnum.pull_request_merged.is_pr_created_event is False
+    assert CCEventEnum.pull_request_merged.is_pr_closed_event is False
+    assert CCEventEnum.pull_request_merged.is_pr_update_event is False
 
 
 def test_properties():
@@ -148,10 +148,10 @@ def test_properties():
         assert cc_event.aws_account_id
         assert cc_event.aws_region
 
-    assert CCEventEnum.pull_request_created.is_pr
-    assert CCEventEnum.pull_request_closed.is_pr
-    assert CCEventEnum.pull_request_updated.is_pr
-    assert CCEventEnum.pull_request_merged.is_pr
+    assert CCEventEnum.pull_request_created.is_pr_event
+    assert CCEventEnum.pull_request_closed.is_pr_event
+    assert CCEventEnum.pull_request_updated.is_pr_event
+    assert CCEventEnum.pull_request_merged.is_pr_event
 
     assert CCEventEnum.pull_request_created.pr_id
     assert CCEventEnum.pull_request_closed.pr_id
@@ -160,8 +160,8 @@ def test_properties():
 
     assert CCEventEnum.commit_to_master.pr_id == ""
 
-    assert CCEventEnum.pull_request_created.is_pr_created_or_updated
-    assert CCEventEnum.pull_request_updated.is_pr_created_or_updated
+    assert CCEventEnum.pull_request_created.is_pr_created_or_updated_event
+    assert CCEventEnum.pull_request_updated.is_pr_created_or_updated_event
 
     assert CCEventEnum.pull_request_created.pr_is_open
     assert CCEventEnum.pull_request_updated.pr_is_open
@@ -184,11 +184,11 @@ def test_properties():
     assert CCEventEnum.commit_to_master.target_commit
     assert CCEventEnum.commit_to_master.target_branch == ""
 
-    assert CCEventEnum.commit_to_master.is_comment is False
-    assert CCEventEnum.pull_request_created.is_comment is False
-    assert CCEventEnum.approval.is_comment is False
-    assert CCEventEnum.comment_on_pull_request_overall.is_comment
-    assert CCEventEnum.comment_on_pull_request_specific_file.is_comment
+    assert CCEventEnum.commit_to_master.is_comment_event is False
+    assert CCEventEnum.pull_request_created.is_comment_event is False
+    assert CCEventEnum.approval.is_comment_event is False
+    assert CCEventEnum.comment_on_pull_request_overall.is_comment_event
+    assert CCEventEnum.comment_on_pull_request_specific_file.is_comment_event
 
     assert CCEventEnum.comment_on_pull_request_overall.source_branch == ""
     assert CCEventEnum.comment_on_pull_request_overall.source_commit
