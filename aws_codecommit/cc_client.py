@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+"""
+Better codecommit boto3 client
+"""
+
 from typing import Optional, Tuple
 from .boto_ses import cc_client
 
