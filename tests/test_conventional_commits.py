@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import os
 import pytest
 from typing import List
-from aws_codecommit.conventional_commits import (
-    tokenize, parse_commit, Commit
-)
+from aws_codecommit.conventional_commits import tokenize, ConventionalCommit, parser
 
 
 @pytest.mark.parametrize(
@@ -13,7 +10,7 @@ from aws_codecommit.conventional_commits import (
     [
         ("a, b, c", ["a", "b", "c"]),
         ("a, b: c d e", ["a", "b", "c", "d", "e"]),
-    ]
+    ],
 )
 def test_tokenize(before: str, after: List[str]):
     assert tokenize(before) == after
@@ -31,12 +28,12 @@ def test_tokenize(before: str, after: List[str]):
                 "2. Second\n"
                 "3. Third\n"
             ),
-            Commit(
+            ConventionalCommit(
                 types=["feat", "build"],
                 description="add validator",
                 scope="STORY-001",
                 breaking=None,
-            )
+            ),
         ),
         # No Scope
         (
@@ -44,12 +41,14 @@ def test_tokenize(before: str, after: List[str]):
                 "fix: be able to handle negative value\n"
                 "see ``def calculate()`` function\n"
             ),
-            Commit(
-                types=["fix", ],
+            ConventionalCommit(
+                types=[
+                    "fix",
+                ],
                 description="be able to handle negative value",
                 scope=None,
                 breaking=None,
-            )
+            ),
         ),
         # No space after ``:``
         (
@@ -57,12 +56,14 @@ def test_tokenize(before: str, after: List[str]):
                 "fix:be able to handle negative value\n"
                 "see ``def calculate()`` function\n"
             ),
-            Commit(
-                types=["fix", ],
+            ConventionalCommit(
+                types=[
+                    "fix",
+                ],
                 description="be able to handle negative value",
                 scope=None,
                 breaking=None,
-            )
+            ),
         ),
         # has breaking
         (
@@ -70,42 +71,22 @@ def test_tokenize(before: str, after: List[str]):
                 "fix (API)!: no longer support Python3.7\n"
                 "see ``def calculate()`` function\n"
             ),
-            Commit(
-                types=["fix", ],
+            ConventionalCommit(
+                types=[
+                    "fix",
+                ],
                 description="no longer support Python3.7",
                 scope="API",
                 breaking="!",
-            )
+            ),
         ),
-    ]
+    ],
 )
-def test_parse_commit(msg: str, commit: Commit):
-    assert parse_commit(msg) == commit
+def test_parse_message(msg: str, commit: ConventionalCommit):
+    assert parser.parse_message(msg) == commit
 
 
 if __name__ == "__main__":
-    import sys
-    import subprocess
+    from aws_codecommit.tests import run_cov_test
 
-    abspath = os.path.abspath(__file__)
-    dir_project_root = os.path.dirname(abspath)
-    for _ in range(10):
-        if os.path.exists(os.path.join(dir_project_root, ".git")):
-            break
-        else:
-            dir_project_root = os.path.dirname(dir_project_root)
-    else:
-        raise FileNotFoundError("cannot find project root dir!")
-    dir_htmlcov = os.path.join(dir_project_root, "htmlcov")
-    bin_pytest = os.path.join(os.path.dirname(sys.executable), "pytest")
-
-    args = [
-        bin_pytest,
-        "-s", "--tb=native",
-        f"--rootdir={dir_project_root}",
-        "--cov=aws_codecommit.conventional_commits",
-        "--cov-report", "term-missing",
-        "--cov-report", f"html:{dir_htmlcov}",
-        abspath,
-    ]
-    subprocess.run(args)
+    run_cov_test(__file__, "aws_codecommit.conventional_commits")
