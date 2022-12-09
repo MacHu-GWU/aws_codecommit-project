@@ -49,7 +49,7 @@ class ConventionalCommitParser:
     """
 
     def __init__(self, types: T.List[str]):
-        self.types = types
+        self.types = [type_.lower().strip() for type_ in types]
         self.subject_regex = _get_subject_regex(types)
 
     def extract_subject(self, msg: str) -> str:
@@ -83,8 +83,11 @@ class ConventionalCommitParser:
             breaking=match["breaking"],
         )
 
-    def parse_message(self, commit_message: str) -> "ConventionalCommit":
-        return self.extract_commit(self.extract_subject(commit_message))
+    def parse_message(self, commit_message: str) -> T.Optional[ConventionalCommit]:
+        try:
+            return self.extract_commit(self.extract_subject(commit_message))
+        except Exception as e:
+            return None
 
 
 class SemanticCommitEnum(enum.Enum):
@@ -123,3 +126,87 @@ semantic_commit_mapper = SemanticCommitEnum.to_mapper()
 
 
 parser = ConventionalCommitParser(types=SemanticCommitEnum.to_str_list())
+
+
+def is_certain_conventional_commit(
+    commit_message: str,
+    stub: T.Union[str, T.List[str]],
+) -> bool:
+    """
+
+    :param commit_message:
+    :param semantic_commit_stub:
+    :return:
+    """
+    commit = parser.parse_message(commit_message)
+    if commit is None:
+        return False
+    if isinstance(stub, str):
+        stub_set = {
+            stub,
+        }
+    else:
+        stub_set = set(stub)
+    return len(set(commit.types).intersection(stub_set)) > 0
+
+
+def is_feat_commit(commit_message: str) -> bool:
+    return is_certain_conventional_commit(
+        commit_message,
+        [SemanticCommitEnum.feat.value, SemanticCommitEnum.feature.value],
+    )
+
+
+def is_fix_commit(commit_message: str) -> bool:
+    return is_certain_conventional_commit(
+        commit_message,
+        SemanticCommitEnum.fix.value,
+    )
+
+
+def is_doc_commit(commit_message: str) -> bool:
+    return is_certain_conventional_commit(
+        commit_message,
+        SemanticCommitEnum.doc.value,
+    )
+
+
+def is_utest_commit(commit_message: str) -> bool:
+    return is_certain_conventional_commit(
+        commit_message, SemanticCommitEnum.utest.value
+    )
+
+
+def is_itest_commit(commit_message: str) -> bool:
+    return is_certain_conventional_commit(
+        commit_message,
+        SemanticCommitEnum.itest.value,
+    )
+
+
+def is_ltest_commit(commit_message: str) -> bool:
+    return is_certain_conventional_commit(
+        commit_message,
+        SemanticCommitEnum.ltest.value,
+    )
+
+
+def is_build_commit(commit_message: str) -> bool:
+    return is_certain_conventional_commit(
+        commit_message,
+        SemanticCommitEnum.build.value,
+    )
+
+
+def is_publish_commit(commit_message: str) -> bool:
+    return is_certain_conventional_commit(
+        commit_message,
+        [SemanticCommitEnum.pub.value, SemanticCommitEnum.publish.value],
+    )
+
+
+def is_release_commit(commit_message: str) -> bool:
+    return is_certain_conventional_commit(
+        commit_message,
+        [SemanticCommitEnum.rls.value, SemanticCommitEnum.release.value],
+    )
