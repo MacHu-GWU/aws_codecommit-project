@@ -44,7 +44,23 @@ def get_file(
     tag: T.Optional[str] = None,
     ref: T.Optional[str] = None,
 ):
-    "https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/codecommit.html#CodeCommit.Client.get_file"
+    """
+    Get file content.
+
+    Reference:
+
+    - https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/codecommit.html#CodeCommit.Client.get_file
+
+    :param bsm:
+    :param repo_name:
+    :param file_path:
+    :param commit_id:
+    :param branch:
+    :param tag:
+    :param ref:
+
+    :return:
+    """
     flag_count = sum(
         [
             bool(commit_id),

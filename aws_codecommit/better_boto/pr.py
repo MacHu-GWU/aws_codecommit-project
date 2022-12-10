@@ -82,6 +82,8 @@ class PullRequest:
 
 def get_pull_request(bsm: BotoSesManager, pr_id: str) -> PullRequest:
     """
+    Get Pull Request details.
+
     Reference:
 
     - https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/codecommit.html#CodeCommit.Client.get_pull_request
