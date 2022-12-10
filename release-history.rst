@@ -15,6 +15,13 @@ Backlog
 **Miscellaneous**
 
 
+1.1.2 (2022-12-10)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**Bugfixes**
+
+- fix a bug that ``get_commit`` didn't load the commit message into ``Commit`` object.
+
+
 1.1.1 (2022-12-09)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **Features and Improvements**
