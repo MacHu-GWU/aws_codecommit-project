@@ -13,7 +13,7 @@ Since it is only used in the AWS Lambda Function, there's no need to use
 this inside of your application code.
 """
 
-from typing import List, Tuple
+import typing as T
 import dataclasses
 
 from .compat import need_cached_property
@@ -344,7 +344,7 @@ class CodeCommitEvent:
     @cached_property
     def _source_commit_message_and_committer(
         self,
-    ) -> Tuple[str, str]:  # pragma: no cover
+    ) -> T.Tuple[str, str]:  # pragma: no cover
         return get_commit_message_and_committer(
             repo_name=self.repo_name,
             commit_id=self.source_commit,
