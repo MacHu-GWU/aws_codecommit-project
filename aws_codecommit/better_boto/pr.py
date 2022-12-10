@@ -6,7 +6,7 @@ from datetime import datetime
 
 from boto_session_manager import BotoSesManager, AwsServiceEnum
 
-from .arg import NOTHING, resolve_kwargs
+from ..console import browse_pr
 
 
 @dataclasses.dataclass
@@ -50,6 +50,7 @@ class PullRequest:
     creation_date: T.Optional[datetime] = dataclasses.field(default=None)
     targets: T.List[PulLRequestTarget] = dataclasses.field(default_factory=list)
     client_request_token: T.Optional[str] = dataclasses.field(default=None)
+    aws_region: T.Optional[str] = dataclasses.field(default=None)
 
     @classmethod
     def from_dict(cls, dct: dict) -> "PullRequest":
@@ -69,6 +70,15 @@ class PullRequest:
             client_request_token=dct.get("clientRequestToken"),
         )
 
+    @property
+    def browse_console_url(self) -> str:
+        return browse_pr(
+            aws_region=self.aws_region,
+            repo_name=self.targets[0].repo_name,
+            pr_id=self.pr_id,
+            detail_tab=True,
+        )
+
 
 def get_pull_request(bsm: BotoSesManager, pr_id: str) -> PullRequest:
     """
@@ -83,4 +93,6 @@ def get_pull_request(bsm: BotoSesManager, pr_id: str) -> PullRequest:
     res = bsm.get_client(AwsServiceEnum.CodeCommit).get_pull_request(
         pullRequestId=pr_id
     )
-    return PullRequest.from_dict(res["pullRequest"])
+    pl = PullRequest.from_dict(res["pullRequest"])
+    pl.aws_region = bsm.aws_region
+    return pl

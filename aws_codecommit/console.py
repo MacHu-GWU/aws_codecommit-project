@@ -78,3 +78,15 @@ def browse_pr(
         f"/repositories/{repo_name}/pull-requests/{pr_id}"
         f"/{tab}?region={aws_region}"
     )
+
+
+def browse_commit(
+    aws_region: str,
+    repo_name: str,
+    commit_id: str,
+) -> str:
+    return (
+        f"https://{aws_region}.console.aws.amazon.com/codesuite/codecommit"
+        f"/repositories/{repo_name}/commit"
+        f"/{commit_id}?region={aws_region}"
+    )
