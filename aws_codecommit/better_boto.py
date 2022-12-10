@@ -4,39 +4,70 @@
 Better codecommit boto3 client
 """
 
+import typing as T
+import dataclasses
 from typing import Optional, Tuple
 from .boto_ses import cc_client
 
 
-def get_commit_message_and_committer(
+@dataclasses.dataclass
+class Commit:
+    commit_id: str = dataclasses.field(default="")
+    tree_id: str = dataclasses.field(default="")
+    parent_commit_ids: T.List[str] = dataclasses.field(default_factory=list)
+    author_name: str = dataclasses.field(default="")
+    author_email: str = dataclasses.field(default="")
+    author_date: str = dataclasses.field(default="")
+    committer_name: str = dataclasses.field(default="")
+    committer_email: str = dataclasses.field(default="")
+    committer_date: str = dataclasses.field(default="")
+    additional_data: str = dataclasses.field(default="")
+
+
+def get_commit(
+    cc_client,
     repo_name: str,
     commit_id: str,
-) -> Tuple[str, str]:  # pragma: no cover
+) -> Commit:
     """
-    Get a specific commit message for a commit.
+    Get commit details
 
+    :param cc_client: boto3.client("codecommit") object
     :param repo_name: CodeCommit repository name
-    :param commit_id: sha1 of commit id
+    :param commit_id:
+    :return:
     """
     res = cc_client.get_commit(
         repositoryName=repo_name,
         commitId=commit_id,
     )
-    commit_message = res["commit"]["message"].split("\n")[0]
-    committer_name = res["commit"]["committer"]["name"]
-    return commit_message, committer_name
+    commit_dict = res["commit"]
+    return Commit(
+        commit_id=commit_dict.get("commitId", ""),
+        tree_id=commit_dict.get("treeId", ""),
+        parent_commit_ids=commit_dict.get("parents", []),
+        author_name=commit_dict.get("author", {}).get("name", ""),
+        author_email=commit_dict.get("author", {}).get("email", ""),
+        author_date=commit_dict.get("author", {}).get("date", ""),
+        committer_name=commit_dict.get("committer", {}).get("name", ""),
+        committer_email=commit_dict.get("committer", {}).get("email", ""),
+        committer_date=commit_dict.get("committer", {}).get("date", ""),
+        additional_data=commit_dict.get("additionalData", ""),
+    )
 
 
-def get_last_commit_id_of_branch(
+def get_branch_last_commit_id(
+    cc_client,
     repo_name: str,
     branch_name: str,
-) -> str:  # pragma: no cover
+) -> str:
     """
     See function name.
 
     :param repo_name: CodeCommit repository name
     :param branch_name: git branch name
-    :return: last commit id of branch
+
+    :return:
     """
     res = cc_client.get_branch(
         repositoryName=repo_name,
@@ -121,10 +152,7 @@ def post_comment_for_pull_request(
     return res["comment"]["commentId"]
 
 
-def update_comment(
-    comment_id: str,
-    content: str
-):  # pragma: no cover
+def update_comment(comment_id: str, content: str):  # pragma: no cover
     """
     Update an existing comment.
     """
