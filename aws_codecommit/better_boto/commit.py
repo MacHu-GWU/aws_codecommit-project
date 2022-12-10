@@ -12,6 +12,7 @@ class Commit:
     commit_id: str = dataclasses.field(default="")
     tree_id: str = dataclasses.field(default="")
     parent_commit_ids: T.List[str] = dataclasses.field(default_factory=list)
+    message: T.Optional[str] = dataclasses.field(default="")
     author_name: str = dataclasses.field(default="")
     author_email: str = dataclasses.field(default="")
     author_date: str = dataclasses.field(default="")
@@ -28,6 +29,7 @@ class Commit:
             commit_id=dct.get("commitId", ""),
             tree_id=dct.get("treeId", ""),
             parent_commit_ids=dct.get("parents", []),
+            message=dct.get("message", ""),
             author_name=dct.get("author", {}).get("name", ""),
             author_email=dct.get("author", {}).get("email", ""),
             author_date=dct.get("author", {}).get("date", ""),
@@ -52,7 +54,11 @@ def get_commit(
     commit_id: str,
 ) -> Commit:
     """
-    Get commit details
+    Get commit details.
+
+    Reference:
+
+    - https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/codecommit.html#CodeCommit.Client.get_commit
 
     :param cc_client: boto3.client("codecommit") object
     :param repo_name: CodeCommit repository name
@@ -76,6 +82,10 @@ def get_branch_last_commit_id(
 ) -> str:
     """
     See function name.
+
+    Reference:
+
+    - https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/codecommit.html#CodeCommit.Client.get_branch
 
     :param repo_name: CodeCommit repository name
     :param branch_name: git branch name

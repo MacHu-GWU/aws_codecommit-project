@@ -45,7 +45,7 @@ else:  # pragma: no cover
     from functools import cached_property
 
 try:
-    from .cc_client import get_commit_message_and_committer
+    from .better_boto import get_commit
 except ImportError:  # pragma: no cover
     pass
 except:  # pragma: no cover
@@ -345,10 +345,11 @@ class CodeCommitEvent:
     def _source_commit_message_and_committer(
         self,
     ) -> T.Tuple[str, str]:  # pragma: no cover
-        return get_commit_message_and_committer(
+        commit = get_commit(
             repo_name=self.repo_name,
             commit_id=self.source_commit,
         )
+        return commit.message, commit.committer_name
 
     @cached_property
     def source_commit_message(self) -> str:  # pragma: no cover
