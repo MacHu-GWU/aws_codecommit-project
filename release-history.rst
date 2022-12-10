@@ -15,6 +15,13 @@ Backlog
 **Miscellaneous**
 
 
+1.1.3 (2022-12-10)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**Bugfixes**
+
+- fix a bug that ``get_commit`` actually need the ``BotoSesManager`` object to do this job.
+
+
 1.1.2 (2022-12-10)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **Bugfixes**

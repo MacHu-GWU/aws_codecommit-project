@@ -16,6 +16,8 @@ this inside of your application code.
 import typing as T
 import dataclasses
 
+from boto_session_manager import BotoSesManager
+
 from .compat import need_cached_property
 from .semantic_branch import (
     is_main_branch,
@@ -114,6 +116,7 @@ class CodeCommitEvent:
     title: str = dataclasses.field(default="")
     aws_account_id: str = dataclasses.field(default="")
     aws_region: str = dataclasses.field(default="")
+    bsm: T.Optional[BotoSesManager] = dataclasses.field(default=None)
 
     @classmethod
     def from_event(cls, event: dict) -> "CodeCommitEvent":
@@ -346,6 +349,7 @@ class CodeCommitEvent:
         self,
     ) -> T.Tuple[str, str]:  # pragma: no cover
         commit = get_commit(
+            bsm=self.bsm,
             repo_name=self.repo_name,
             commit_id=self.source_commit,
         )
