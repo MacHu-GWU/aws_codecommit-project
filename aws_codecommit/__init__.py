@@ -28,5 +28,10 @@ try:
         default_parser,
         is_certain_semantic_commit,
     )
+    from .console import (
+        browse_code,
+        browse_pr,
+    )
+    from . import better_boto, console
 except ImportError as e: # pragma: no cover
     pass

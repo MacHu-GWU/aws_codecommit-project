@@ -15,6 +15,9 @@ def test():
     _ = aws_codecommit.default_parser
     _ = aws_codecommit.is_certain_semantic_commit
 
+    _ = aws_codecommit.better_boto
+    _ = aws_codecommit.console
+
 
 if __name__ == "__main__":
     import os

@@ -15,6 +15,14 @@ Backlog
 **Miscellaneous**
 
 
+1.1.1 (2022-12-09)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**Features and Improvements**
+
+- add ``aws_codecommit.better_boto`` module, a objective oriented boto3.client("codecommit") API. I am actively adding more feature to it.
+- add ``aws_codecommit.console`` module, a aws codecommit console url builder.
+
+
 1.0.1 (2022-12-09)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **Features and Improvements**
