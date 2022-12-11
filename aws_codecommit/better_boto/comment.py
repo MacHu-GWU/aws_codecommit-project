@@ -51,6 +51,49 @@ def get_comment(
     return Comment.from_dict(res["comment"])
 
 
+def post_comment_for_compared_commit(
+    bsm: BotoSesManager,
+    repo_name: str,
+    before_commit_id: str,
+    after_commit_id: str,
+    content: str,
+    location: T.Optional[dict] = NOTHING,
+    client_request_token: T.Optional[dict] = NOTHING,
+) -> Comment:
+    """
+    Reference:
+
+    - https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/codecommit.html#CodeCommit.Client.post_comment_for_compared_commit
+
+    :param bsm:
+    :param repo_name:
+    :param before_commit_id:
+    :param after_commit_id:
+    :param content:
+    :param location:
+    :param client_request_token:
+    :return:
+    """
+    kwargs = resolve_kwargs(
+        _mapper=dict(
+            repo_name="repositoryName",
+            before_commit_id="beforeCommitId",
+            after_commit_id="afterCommitId",
+            content="content",
+            location="location",
+            client_request_token="clientRequestToken",
+        ),
+        repo_name=repo_name,
+        before_commit_id=before_commit_id,
+        after_commit_id=after_commit_id,
+        content=content,
+        location=location,
+        client_request_token=client_request_token,
+    )
+    res = bsm.codecommit_client.post_comment_for_compared_commit(**kwargs)
+    return Comment.from_dict(res["comment"])
+
+
 def post_comment_for_pull_request(
     bsm: BotoSesManager,
     pr_id: str,
@@ -94,9 +137,7 @@ def post_comment_for_pull_request(
         location=location,
         client_request_token=client_request_token,
     )
-    res = bsm.codecommit_client.post_comment_for_pull_request(
-        **kwargs
-    )
+    res = bsm.codecommit_client.post_comment_for_pull_request(**kwargs)
     return Comment.from_dict(res["comment"])
 
 
@@ -149,7 +190,7 @@ def update_comment(
     return Comment.from_dict(res["comment"])
 
 
-class PullRequestCommentThread:
+class CommentThread:
     def __init__(self, bsm: BotoSesManager):
         self.bsm = bsm
         self.comment: T.Optional[Comment] = None
@@ -157,24 +198,29 @@ class PullRequestCommentThread:
 
     def post_comment(
         self,
-        pr_id: str,
         repo_name: str,
         before_commit_id: str,
         after_commit_id: str,
         content: str,
+        pr_id: T.Optional[str] = NOTHING,
         location: T.Optional[dict] = NOTHING,
         client_request_token: T.Optional[dict] = NOTHING,
     ) -> Comment:
-        self.comment = post_comment_for_pull_request(
-            bsm=self.bsm,
-            pr_id=pr_id,
+        if pr_id is NOTHING:
+            method = post_comment_for_compared_commit
+        else:
+            method = post_comment_for_pull_request
+        kwargs = resolve_kwargs(
             repo_name=repo_name,
             before_commit_id=before_commit_id,
             after_commit_id=after_commit_id,
             content=content,
+            pr_id=pr_id,
             location=location,
             client_request_token=client_request_token,
         )
+
+        self.comment = method(bsm=self.bsm, **kwargs)
         self.reply_comment_list.clear()
         return self.comment
 
@@ -200,3 +246,6 @@ class PullRequestCommentThread:
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.comment = None
         self.reply_comment_list.clear()
+
+
+PullRequestCommentThread = CommentThread # for backward compatibility
