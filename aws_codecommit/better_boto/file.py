@@ -88,6 +88,6 @@ def get_file(
     else:  # pragma: no cover
         raise NotImplementedError
 
-    res = bsm.get_client(AwsServiceEnum.CodeCommit).get_file(**kwargs)
+    res = bsm.codecommit_client.get_file(**kwargs)
 
     return File.from_dict(res)

@@ -90,7 +90,7 @@ class ConventionalCommitParser:
             return None
 
 
-class SemanticCommitEnum(enum.Enum):
+class SemanticCommitEnum(str, enum.Enum):
     """
     Semantic commit message can help CI to determine what you want to do.
 
@@ -113,19 +113,8 @@ class SemanticCommitEnum(enum.Enum):
     rls = "rls"  # release
     release = "release"  # release
 
-    @classmethod
-    def to_str_list(cls) -> T.List[str]:
-        return [e.value for e in cls]
 
-    @classmethod
-    def to_mapper(cls) -> T.Dict[str, "SemanticCommitEnum"]:
-        return {e.name: e for e in cls}
-
-
-semantic_commit_mapper = SemanticCommitEnum.to_mapper()
-
-
-default_parser = ConventionalCommitParser(types=SemanticCommitEnum.to_str_list())
+default_parser = ConventionalCommitParser(types=list(SemanticCommitEnum))
 
 
 def is_certain_semantic_commit(
@@ -153,71 +142,71 @@ def is_certain_semantic_commit(
 def is_feat_commit(commit_message: str) -> bool:
     return is_certain_semantic_commit(
         commit_message,
-        [SemanticCommitEnum.feat.value, SemanticCommitEnum.feature.value],
+        [SemanticCommitEnum.feat, SemanticCommitEnum.feature],
     )
 
 
 def is_fix_commit(commit_message: str) -> bool:
     return is_certain_semantic_commit(
         commit_message,
-        SemanticCommitEnum.fix.value,
+        SemanticCommitEnum.fix,
     )
 
 
 def is_doc_commit(commit_message: str) -> bool:
     return is_certain_semantic_commit(
         commit_message,
-        SemanticCommitEnum.doc.value,
+        SemanticCommitEnum.doc,
     )
 
 
 def is_test_commit(commit_message: str) -> bool:
     return is_certain_semantic_commit(
         commit_message, [
-            SemanticCommitEnum.test.value,
-            SemanticCommitEnum.utest.value,
-            SemanticCommitEnum.itest.value,
-            SemanticCommitEnum.ltest.value,
+            SemanticCommitEnum.test,
+            SemanticCommitEnum.utest,
+            SemanticCommitEnum.itest,
+            SemanticCommitEnum.ltest,
         ]
     )
 
 
 def is_utest_commit(commit_message: str) -> bool:
     return is_certain_semantic_commit(
-        commit_message, SemanticCommitEnum.utest.value
+        commit_message, SemanticCommitEnum.utest
     )
 
 
 def is_itest_commit(commit_message: str) -> bool:
     return is_certain_semantic_commit(
         commit_message,
-        SemanticCommitEnum.itest.value,
+        SemanticCommitEnum.itest,
     )
 
 
 def is_ltest_commit(commit_message: str) -> bool:
     return is_certain_semantic_commit(
         commit_message,
-        SemanticCommitEnum.ltest.value,
+        SemanticCommitEnum.ltest,
     )
 
 
 def is_build_commit(commit_message: str) -> bool:
     return is_certain_semantic_commit(
         commit_message,
-        SemanticCommitEnum.build.value,
+        SemanticCommitEnum.build,
     )
 
 
 def is_publish_commit(commit_message: str) -> bool:
     return is_certain_semantic_commit(
         commit_message,
-        [SemanticCommitEnum.pub.value, SemanticCommitEnum.publish.value],
+        [SemanticCommitEnum.pub, SemanticCommitEnum.publish],
     )
 
 
 def is_release_commit(commit_message: str) -> bool:
     return is_certain_semantic_commit(
         commit_message,
-        [SemanticCommitEnum.rls.value, SemanticCommitEnum.release.value],
+        [SemanticCommitEnum.rls, SemanticCommitEnum.release],
     )

@@ -14,11 +14,12 @@ this inside of your application code.
 """
 
 import typing as T
+import enum
 import dataclasses
 
 from boto_session_manager import BotoSesManager
 
-from .compat import need_cached_property
+from .compat import cached_property
 from .semantic_branch import (
     is_main_branch,
     is_develop_branch,
@@ -41,11 +42,6 @@ from .conventional_commits import (
     is_release_commit,
 )
 
-if need_cached_property:  # pragma: no cover
-    from cached_property import cached_property
-else:  # pragma: no cover
-    from functools import cached_property
-
 try:
     from .better_boto import get_commit
 except ImportError:  # pragma: no cover
@@ -54,13 +50,12 @@ except:  # pragma: no cover
     raise
 
 
-class CodeCommitEventTypeEnum:
+class CodeCommitEventTypeEnum(str, enum.Enum):
     """
     Enumerate common CodeCommit notification event type.
 
     It is the value of the :meth:`CodeCommitEvent.event_type` method.
     """
-
     commit_to_branch = "commit_to_branch"
     commit_to_branch_from_merge = "commit_to_branch_from_merge"
     create_branch = "create_branch"
@@ -82,7 +77,6 @@ class CodeCommitEvent:
     """
     Data container class to represent a CodeCommit notification event.
     """
-
     afterCommitId: str = dataclasses.field(default="")
     approvalStatus: str = dataclasses.field(default="")
     author: str = dataclasses.field(default="")
@@ -116,6 +110,7 @@ class CodeCommitEvent:
     title: str = dataclasses.field(default="")
     aws_account_id: str = dataclasses.field(default="")
     aws_region: str = dataclasses.field(default="")
+
     bsm: T.Optional[BotoSesManager] = dataclasses.field(default=None)
 
     @classmethod

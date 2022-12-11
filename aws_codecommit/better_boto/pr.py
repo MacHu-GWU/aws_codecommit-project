@@ -92,7 +92,7 @@ def get_pull_request(bsm: BotoSesManager, pr_id: str) -> PullRequest:
     :param pr_id:
     :return:
     """
-    res = bsm.get_client(AwsServiceEnum.CodeCommit).get_pull_request(
+    res = bsm.codecommit_client.get_pull_request(
         pullRequestId=pr_id
     )
     pl = PullRequest.from_dict(res["pullRequest"])

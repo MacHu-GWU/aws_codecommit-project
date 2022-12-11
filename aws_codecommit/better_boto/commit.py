@@ -65,7 +65,7 @@ def get_commit(
     :param commit_id:
     :return:
     """
-    res = bsm.get_client(AwsServiceEnum.CodeCommit).get_commit(
+    res = bsm.codecommit_client.get_commit(
         repositoryName=repo_name,
         commitId=commit_id,
     )
@@ -92,7 +92,7 @@ def get_branch_last_commit_id(
 
     :return:
     """
-    res = bsm.get_client(AwsServiceEnum.CodeCommit).get_branch(
+    res = bsm.codecommit_client.get_branch(
         repositoryName=repo_name,
         branchName=branch_name,
     )

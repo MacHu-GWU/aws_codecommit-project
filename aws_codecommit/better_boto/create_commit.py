@@ -83,7 +83,7 @@ def create_commit(
         delete_files=delete_files,
     )
     try:
-        res = bsm.get_client(AwsServiceEnum.CodeCommit).create_commit(**kwargs)
+        res = bsm.codecommit_client.create_commit(**kwargs)
         commit = Commit.from_dict(res)
         commit.repo_name = repo_name
         commit.aws_region = bsm.aws_region
@@ -152,7 +152,7 @@ def put_file(
         author_email=author_email,
     )
     try:
-        res = bsm.get_client(AwsServiceEnum.CodeCommit).put_file(**kwargs)
+        res = bsm.codecommit_client.put_file(**kwargs)
         commit = Commit.from_dict(res)
         commit.repo_name = repo_name
         commit.aws_region = bsm.aws_region

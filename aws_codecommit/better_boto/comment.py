@@ -47,7 +47,7 @@ def get_comment(
     :param comment_id:
     :return:
     """
-    res = bsm.get_client(AwsServiceEnum.CodeCommit).get_comment(commentId=comment_id)
+    res = bsm.codecommit_client.get_comment(commentId=comment_id)
     return Comment.from_dict(res["comment"])
 
 
@@ -94,7 +94,7 @@ def post_comment_for_pull_request(
         location=location,
         client_request_token=client_request_token,
     )
-    res = bsm.get_client(AwsServiceEnum.CodeCommit).post_comment_for_pull_request(
+    res = bsm.codecommit_client.post_comment_for_pull_request(
         **kwargs
     )
     return Comment.from_dict(res["comment"])
@@ -123,7 +123,7 @@ def post_comment_reply(
         content=content,
         client_request_token=client_request_token,
     )
-    res = bsm.get_client(AwsServiceEnum.CodeCommit).post_comment_reply(**kwargs)
+    res = bsm.codecommit_client.post_comment_reply(**kwargs)
     return Comment.from_dict(res["comment"])
 
 
@@ -142,7 +142,7 @@ def update_comment(
     :param content:
     :return:
     """
-    res = bsm.get_client(AwsServiceEnum.CodeCommit).update_comment(
+    res = bsm.codecommit_client.update_comment(
         commentId=comment_id,
         content=content,
     )

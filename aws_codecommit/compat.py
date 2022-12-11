@@ -9,6 +9,6 @@ if (
     raise NotImplementedError("we don't support < Python3.6!")
 
 if sys.version_info.minor < 8:
-    need_cached_property = True
+    from cached_property import cached_property
 else:
-    need_cached_property = False
+    from functools import cached_property

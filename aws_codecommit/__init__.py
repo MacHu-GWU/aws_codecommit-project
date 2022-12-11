@@ -24,13 +24,14 @@ try:
     )
     from .conventional_commits import (
         SemanticCommitEnum,
+        is_certain_semantic_commit,
         ConventionalCommitParser,
         default_parser,
-        is_certain_semantic_commit,
     )
     from .console import (
         browse_code,
         browse_pr,
+        browse_commit,
     )
     from . import better_boto, console
 except ImportError as e: # pragma: no cover
