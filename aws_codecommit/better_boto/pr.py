@@ -11,6 +11,18 @@ from ..console import browse_pr
 
 @dataclasses.dataclass
 class PulLRequestTarget:
+    """
+    Examples:
+
+    If this event is about a PR that merge from 'dev' branch to 'main'.
+    And the last commit in 'dev' is 'last-dev', and last commit in
+    'main' is 'last-main'. Then:
+
+    - ``self.src_ref`` is 'refs/heads/dev'
+    - ``self.dst_ref`` is 'refs/heads/main'
+    - ``self.src_commit`` is 'last-dev'
+    - ``self.dst_commit`` is 'last-main'
+    """
     repo_name: str = dataclasses.field()
     src_ref: str = dataclasses.field()
     dst_ref: str = dataclasses.field()
@@ -28,8 +40,8 @@ class PulLRequestTarget:
             repo_name=dct["repositoryName"],
             src_ref=dct["sourceReference"],
             dst_ref=dct["destinationReference"],
-            src_commit=dct["destinationCommit"],
-            dst_commit=dct["sourceCommit"],
+            src_commit=dct["sourceCommit"],
+            dst_commit=dct["destinationCommit"],
             merge_base_commit=dct["mergeBase"],
             is_merged=dct.get("mergeMetadata", {}).get("isMerged"),
             merged_by=dct.get("mergeMetadata", {}).get("mergedBy"),
@@ -40,6 +52,8 @@ class PulLRequestTarget:
 
 @dataclasses.dataclass
 class PullRequest:
+    """
+    """
     pr_id: str = dataclasses.field()
     title: str = dataclasses.field()
     pr_status: str = dataclasses.field()
