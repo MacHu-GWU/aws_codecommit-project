@@ -15,11 +15,30 @@ Backlog
 **Miscellaneous**
 
 
-1.1.3 (2022-12-10)
+1.3.1 (2022-12-11)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**Features and Improvements**
+
+- add ``aws_codecommit.CommentThread`` to the public API, it can do comment for both Pull Request and commits.
+
+**Minor Improvements**
+
+- add :func:`~aws_codecommit.console.browse_file` method
+
 **Bugfixes**
 
-- fix a bug that ``get_commit`` actually need the ``BotoSesManager`` object to do this job.
+- fix a bug that the ``PullRequest`` object doesn't have the right source and destination commit.
+
+**Miscellaneous**
+
+- more integration test for ``better_boto`` module
+
+
+1.2.1 (2022-12-11)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**Minor Improvements**
+
+- add :func:`~aws_codecommit.console.browse_commit` method
 
 
 1.1.2 (2022-12-10)

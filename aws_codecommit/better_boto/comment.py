@@ -22,6 +22,9 @@ class Comment:
 
     @classmethod
     def from_dict(cls, dct: dict) -> "Comment":
+        """
+        Note: this is not a public API
+        """
         return cls(
             comment_id=dct.get("commentId"),
             content=dct.get("content"),
@@ -248,4 +251,4 @@ class CommentThread:
         self.reply_comment_list.clear()
 
 
-PullRequestCommentThread = CommentThread # for backward compatibility
+PullRequestCommentThread = CommentThread  # for backward compatibility

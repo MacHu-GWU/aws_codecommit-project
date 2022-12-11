@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
 import typing as T
-import base64
 import dataclasses
 
-from boto_session_manager import BotoSesManager, AwsServiceEnum
+from boto_session_manager import BotoSesManager
+
+from ..console import browse_file
 
 
 @dataclasses.dataclass
@@ -15,6 +16,8 @@ class File:
     file_mode: str = dataclasses.field()
     file_size: str = dataclasses.field()
     file_content: bytes = dataclasses.field()
+    aws_region: T.Optional[str] = dataclasses.field(default=None)
+    repo_name: T.Optional[str] = dataclasses.field(default=None)
 
     @property
     def binary(self) -> bytes:
@@ -25,6 +28,9 @@ class File:
 
     @classmethod
     def from_dict(cls, dct: dict) -> "File":
+        """
+        Note: this is not a public API
+        """
         return cls(
             commit_id=dct["commitId"],
             blob_id=dct["blobId"],
@@ -32,6 +38,18 @@ class File:
             file_mode=dct["fileMode"],
             file_size=dct["fileSize"],
             file_content=dct["fileContent"],
+        )
+
+    @property
+    def browse_console_url(self) -> str:
+        """
+        .. versionadded:: 1.3.1
+        """
+        return browse_file(
+            aws_region=self.aws_region,
+            repo_name=self.repo_name,
+            commit_id=self.commit_id,
+            file_path=self.file_path,
         )
 
 
@@ -90,4 +108,7 @@ def get_file(
 
     res = bsm.codecommit_client.get_file(**kwargs)
 
-    return File.from_dict(res)
+    file = File.from_dict(res)
+    file.aws_region = bsm.aws_region
+    file.repo_name = repo_name
+    return file

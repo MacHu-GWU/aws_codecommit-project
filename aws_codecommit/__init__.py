@@ -15,24 +15,17 @@ __github_username__ = "MacHu-GWU"
 
 
 try:
-    from .notification import (
-        CodeCommitEvent,
-    )
-    from .semantic_branch import (
-        SemanticBranchEnum,
-        is_certain_semantic_branch,
-    )
-    from .conventional_commits import (
-        SemanticCommitEnum,
-        is_certain_semantic_commit,
-        ConventionalCommitParser,
-        default_parser,
-    )
-    from .console import (
-        browse_code,
-        browse_pr,
-        browse_commit,
-    )
-    from . import better_boto, console
+    from .notification import CodeCommitEvent
+    from .semantic_branch import SemanticBranchEnum
+    from .semantic_branch import is_certain_semantic_branch
+    from .conventional_commits import SemanticCommitEnum
+    from .conventional_commits import is_certain_semantic_commit
+    from .conventional_commits import ConventionalCommitParser
+    from .conventional_commits import default_parser
+    from .console import browse_code
+    from .console import browse_pr
+    from .console import browse_commit
+    from . import better_boto
+    from . import console
 except ImportError as e: # pragma: no cover
     pass

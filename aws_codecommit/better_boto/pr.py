@@ -68,6 +68,9 @@ class PullRequest:
 
     @classmethod
     def from_dict(cls, dct: dict) -> "PullRequest":
+        """
+        Note: this is not a public API
+        """
         return cls(
             pr_id=dct["pullRequestId"],
             title=dct["title"],

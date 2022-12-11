@@ -25,6 +25,9 @@ class Commit:
 
     @classmethod
     def from_dict(cls, dct: dict) -> "Commit":
+        """
+        Note: this is not a public API
+        """
         return cls(
             commit_id=dct.get("commitId", ""),
             tree_id=dct.get("treeId", ""),

@@ -61,28 +61,28 @@ class TestPullRequestCommentThread:
         #     thread.reply(content=f"destination commit: {target.dst_commit}")
 
         # --- commit comment thread
-        # console_url = browse_commit(
-        #     aws_region=bsm.aws_region,
-        #     repo_name=target.repo_name,
-        #     commit_id=target.src_commit,
-        # )
-        # print(f"preview commit comment at: {console_url}")
-        #
-        # parent_commit_id = get_commit(
-        #     bsm,
-        #     repo_name=repo_name,
-        #     commit_id=target.src_commit,
-        # ).parent_commit_ids[0]
-        #
-        # with CommentThread(bsm) as thread:
-        #     thread.post_comment(
-        #         repo_name=pr.targets[0].repo_name,
-        #         before_commit_id=parent_commit_id,
-        #         after_commit_id=target.src_commit,
-        #         content=f"parent = {parent_commit_id}, commit = {target.src_commit}",
-        #     )
-        #     thread.reply(content=f"parent = {parent_commit_id}")
-        #     thread.reply(content=f"target = {target.src_commit}")
+        console_url = browse_commit(
+            aws_region=bsm.aws_region,
+            repo_name=target.repo_name,
+            commit_id=target.src_commit,
+        )
+        print(f"preview commit comment at: {console_url}")
+
+        parent_commit_id = get_commit(
+            bsm,
+            repo_name=repo_name,
+            commit_id=target.src_commit,
+        ).parent_commit_ids[0]
+
+        with CommentThread(bsm) as thread:
+            thread.post_comment(
+                repo_name=pr.targets[0].repo_name,
+                before_commit_id=parent_commit_id,
+                after_commit_id=target.src_commit,
+                content=f"parent = {parent_commit_id}, commit = {target.src_commit}",
+            )
+            thread.reply(content=f"parent = {parent_commit_id}")
+            thread.reply(content=f"target = {target.src_commit}")
 
         # --- create commit
         # last_commit_id = get_branch_last_commit_id(
@@ -93,25 +93,25 @@ class TestPullRequestCommentThread:
         # print(target.dst_commit)
         # print(last_commit_id)
 
-        print(target.src_ref)
-        print(target.src_commit)
-        commit = create_commit(
-            bsm=bsm,
-            repo_name=target.repo_name,
-            branch_name=target.src_ref.split("/")[-1],
-            parent_commit_id=target.src_commit,
-            author_name="alice",
-            author_email="alice@example.com",
-            commit_message="overwrite",
-            put_files=[
-                dict(
-                    filePath="chore.txt",
-                    fileMode="NORMAL",
-                    fileContent="god",
-                )
-            ]
-        )
-        rprint(commit)
+        # print(target.src_ref)
+        # print(target.src_commit)
+        # commit = create_commit(
+        #     bsm=bsm,
+        #     repo_name=target.repo_name,
+        #     branch_name=target.src_ref.split("/")[-1],
+        #     parent_commit_id=target.src_commit,
+        #     author_name="alice",
+        #     author_email="alice@example.com",
+        #     commit_message="overwrite",
+        #     put_files=[
+        #         dict(
+        #             filePath="chore.txt",
+        #             fileMode="NORMAL",
+        #             fileContent="god",
+        #         )
+        #     ]
+        # )
+        # rprint(commit)
 
         # commit = put_file(
         #     bsm=bsm,

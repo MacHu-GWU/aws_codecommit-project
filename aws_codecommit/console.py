@@ -90,3 +90,16 @@ def browse_commit(
         f"/repositories/{repo_name}/commit"
         f"/{commit_id}?region={aws_region}"
     )
+
+
+def browse_file(
+    aws_region: str,
+    repo_name: str,
+    commit_id: str,
+    file_path: str,
+) -> str:
+    return (
+        f"https://{aws_region}.console.aws.amazon.com/codesuite/codecommit"
+        f"/repositories/{repo_name}"
+        f"/browse/{commit_id}/--/{file_path}?region={aws_region}"
+    )
