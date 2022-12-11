@@ -4,7 +4,7 @@ import typing as T
 import enum
 
 
-class SemanticBranchEnum(enum.Enum):
+class SemanticBranchEnum(str, enum.Enum):
     main = "main"
     master = "master"
     dev = "dev"
@@ -36,8 +36,8 @@ def is_main_branch(name: str) -> bool:
     return is_certain_semantic_branch(
         name,
         [
-            SemanticBranchEnum.main.value,
-            SemanticBranchEnum.master.value,
+            SemanticBranchEnum.main,
+            SemanticBranchEnum.master,
         ],
     )
 
@@ -46,8 +46,8 @@ def is_develop_branch(name: str) -> bool:
     return is_certain_semantic_branch(
         name,
         [
-            SemanticBranchEnum.dev.value,
-            SemanticBranchEnum.develop.value,
+            SemanticBranchEnum.dev,
+            SemanticBranchEnum.develop,
         ],
     )
 
@@ -56,8 +56,8 @@ def is_feature_branch(name: str) -> bool:
     return is_certain_semantic_branch(
         name,
         [
-            SemanticBranchEnum.feat.value,
-            SemanticBranchEnum.feature.value,
+            SemanticBranchEnum.feat,
+            SemanticBranchEnum.feature,
         ],
     )
 
@@ -66,7 +66,7 @@ def is_build_branch(name: str) -> bool:
     return is_certain_semantic_branch(
         name,
         [
-            SemanticBranchEnum.build.value,
+            SemanticBranchEnum.build,
         ],
     )
 
@@ -75,7 +75,7 @@ def is_doc_branch(name: str) -> bool:
     return is_certain_semantic_branch(
         name,
         [
-            SemanticBranchEnum.doc.value,
+            SemanticBranchEnum.doc,
         ],
     )
 
@@ -84,7 +84,7 @@ def is_fix_branch(name: str) -> bool:
     return is_certain_semantic_branch(
         name,
         [
-            SemanticBranchEnum.fix.value,
+            SemanticBranchEnum.fix,
         ],
     )
 
@@ -93,7 +93,7 @@ def is_release_branch(name: str) -> bool:
     return is_certain_semantic_branch(
         name,
         [
-            SemanticBranchEnum.rls.value,
-            SemanticBranchEnum.release.value,
+            SemanticBranchEnum.rls,
+            SemanticBranchEnum.release,
         ],
     )

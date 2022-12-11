@@ -15,6 +15,13 @@ Backlog
 **Miscellaneous**
 
 
+1.3.3 (2022-12-11)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**Miscellaneous**
+
+- the CodeCommitEvent.event_type should return a string, not a Enum object
+
+
 1.3.2 (2022-12-11)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **Miscellaneous**

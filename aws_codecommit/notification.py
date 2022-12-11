@@ -175,50 +175,50 @@ class CodeCommitEvent:
     def event_type(self) -> str:
         if self.event == "referenceUpdated":
             if self.mergeOption:
-                return CodeCommitEventTypeEnum.commit_to_branch_from_merge
+                return CodeCommitEventTypeEnum.commit_to_branch_from_merge.value
             else:
-                return CodeCommitEventTypeEnum.commit_to_branch
+                return CodeCommitEventTypeEnum.commit_to_branch.value
         elif self.event == "referenceCreated":
-            return CodeCommitEventTypeEnum.create_branch
+            return CodeCommitEventTypeEnum.create_branch.value
         elif self.event == "referenceDeleted":
-            return CodeCommitEventTypeEnum.delete_branch
+            return CodeCommitEventTypeEnum.delete_branch.value
         elif self.event == "pullRequestCreated":
             if self.isMerged == "False" and self.pullRequestStatus == "Open":
-                return CodeCommitEventTypeEnum.pr_created
+                return CodeCommitEventTypeEnum.pr_created.value
             else:  # pragma: no cover
-                return CodeCommitEventTypeEnum.unknown
+                return CodeCommitEventTypeEnum.unknown.value
         elif (
             self.event == "pullRequestStatusChanged"
             and self.pullRequestStatus == "Closed"
         ):
-            return CodeCommitEventTypeEnum.pr_closed
+            return CodeCommitEventTypeEnum.pr_closed.value
         elif self.event == "pullRequestSourceBranchUpdated":
-            return CodeCommitEventTypeEnum.pr_updated
+            return CodeCommitEventTypeEnum.pr_updated.value
         elif (
             self.event == "pullRequestMergeStatusUpdated"
             and self.isMerged == "True"
             and self.pullRequestStatus == "Closed"
         ):
-            return CodeCommitEventTypeEnum.pr_merged
+            return CodeCommitEventTypeEnum.pr_merged.value
         elif self.event == "commentOnPullRequestCreated":
             if self.inReplyTo:
-                return CodeCommitEventTypeEnum.reply_to_comment
+                return CodeCommitEventTypeEnum.reply_to_comment.value
             else:
-                return CodeCommitEventTypeEnum.comment_on_pr_created
+                return CodeCommitEventTypeEnum.comment_on_pr_created.value
         elif self.event == "commentOnPullRequestUpdated":
             if self.inReplyTo:
-                return CodeCommitEventTypeEnum.reply_to_comment
+                return CodeCommitEventTypeEnum.reply_to_comment.value
             else:
-                return CodeCommitEventTypeEnum.comment_on_pr_updated
+                return CodeCommitEventTypeEnum.comment_on_pr_updated.value
         elif (
             self.event == "pullRequestApprovalStateChanged"
             and self.approvalStatus == "APPROVE"
         ):
-            return CodeCommitEventTypeEnum.approve_pr
+            return CodeCommitEventTypeEnum.approve_pr.value
         elif self.event == "pullRequestApprovalRuleOverridden":
-            return CodeCommitEventTypeEnum.approve_rule_override
+            return CodeCommitEventTypeEnum.approve_rule_override.value
         else:  # pragma: no cover
-            return CodeCommitEventTypeEnum.unknown
+            return CodeCommitEventTypeEnum.unknown.value
 
     @cached_property
     def event_description(self) -> str:  # pragma: no cover

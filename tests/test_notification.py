@@ -115,7 +115,9 @@ def test_event_type():
     assert CCEventEnum.pull_request_closed.is_pr_closed_event
     assert CCEventEnum.pull_request_updated.is_pr_update_event
     assert CCEventEnum.pull_request_merged.is_pr_merged_event
-    assert CCEventEnum.comment_on_pull_request_specific_file.is_comment_on_pr_created_event
+    assert (
+        CCEventEnum.comment_on_pull_request_specific_file.is_comment_on_pr_created_event
+    )
     assert CCEventEnum.comment_on_pull_request_overall.is_comment_on_pr_created_event
     assert CCEventEnum.reply_to_comment_pr_created.is_reply_to_comment_event
     assert CCEventEnum.comment_on_pull_request_updated.is_comment_on_pr_updated_event
@@ -124,7 +126,7 @@ def test_event_type():
     assert CCEventEnum.approval.is_approve_pr_event
     assert CCEventEnum.approval_rule_override.is_approve_rule_override_event
 
-    #
+    # negative case
     assert CCEventEnum.pull_request_created.is_pr_closed_event is False
     assert CCEventEnum.pull_request_created.is_pr_update_event is False
     assert CCEventEnum.pull_request_created.is_pr_merged_event is False
@@ -140,6 +142,13 @@ def test_event_type():
     assert CCEventEnum.pull_request_merged.is_pr_created_event is False
     assert CCEventEnum.pull_request_merged.is_pr_closed_event is False
     assert CCEventEnum.pull_request_merged.is_pr_update_event is False
+
+    # event type enum is string
+    assert type(CCEventEnum.pull_request_updated.event_type) is str
+    assert CCEventEnum.pull_request_updated.event_type == CCEventTypeEnum.pr_updated
+    assert (
+        CCEventEnum.pull_request_updated.event_type == CCEventTypeEnum.pr_updated.value
+    )
 
 
 def test_properties():
