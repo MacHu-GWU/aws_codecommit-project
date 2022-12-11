@@ -15,6 +15,13 @@ Backlog
 **Miscellaneous**
 
 
+1.3.2 (2022-12-11)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**Miscellaneous**
+
+- add a lot of function from better_boto to public API (forgot to add in 1.3.1)
+
+
 1.3.1 (2022-12-11)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **Features and Improvements**
