@@ -6,6 +6,7 @@ from .comment import (
     post_comment_reply,
     update_comment,
     PullRequestCommentThread,
+    CommentThread,
 )
 from .commit import (
     get_commit,
