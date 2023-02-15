@@ -50,13 +50,15 @@
 
 Welcome to ``aws_codecommit`` Documentation
 ==============================================================================
-``aws_codecommit`` aim to extract more potential from AWS CodeCommit.
+``aws_codecommit`` aim to extract more potential from AWS CodeCommit. ``aws_codecommit`` library is the foundation to bring `GitHub Action Trigger <https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows>`_, `CircleCI Workflow Trigger <https://circleci.com/docs/configuration-reference/#triggers>`_, `Jenkins Multi branch trigger <https://www.jenkins.io/doc/book/pipeline/multibranch/>`_, `GitLab Pipeline Trigger <https://docs.gitlab.com/ee/ci/pipelines/>`_ into AWS CodeCommit, and give you the flexibility to create more advanced custom trigger.
+
+I created `one-click deployable, extentible CI/CD solution <https://github.com/MacHu-GWU/aws_ci_bot-project>`_ using AWS CodeCommit and AWS CodeBuild on top of ``aws_codecommit``.
 
 Features:
 
-- semantic commit
-- semantic branch
-- codecommit notification event parser
+- `Semantic commit parser <https://github.com/MacHu-GWU/aws_codecommit-project/blob/main/examples/Semantic-Commit-Parser.ipynb>`_
+- `Semantic branch parser <https://github.com/MacHu-GWU/aws_codecommit-project/blob/main/examples/Semantic-Branch-Parser.ipynb>`_
+- `Codecommit notification event parser <https://github.com/MacHu-GWU/aws_codecommit-project/blob/main/examples/codecommit-notification-event-parser.ipynb>`_
 - better codecommit boto API
 
 
