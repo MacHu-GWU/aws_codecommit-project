@@ -19,9 +19,9 @@ try:
     from .semantic_branch import SemanticBranchEnum
     from .semantic_branch import is_certain_semantic_branch
     from .conventional_commits import SemanticCommitEnum
-    from .conventional_commits import is_certain_semantic_commit
     from .conventional_commits import ConventionalCommitParser
     from .conventional_commits import default_parser
+    from .conventional_commits import is_certain_semantic_commit
     from .console import browse_code
     from .console import browse_pr
     from .console import browse_commit

@@ -3,12 +3,15 @@
 import typing as T
 import dataclasses
 
-from boto_session_manager import BotoSesManager, AwsServiceEnum
+from boto_session_manager import BotoSesManager
 from ..console import browse_commit
 
 
 @dataclasses.dataclass
 class Commit:
+    """
+    Data model of a CodeCommit comment.
+    """
     commit_id: str = dataclasses.field(default="")
     tree_id: str = dataclasses.field(default="")
     parent_commit_ids: T.List[str] = dataclasses.field(default_factory=list)

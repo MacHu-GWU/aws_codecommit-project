@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import typing as T
-import dataclasses
 
-from boto_session_manager import BotoSesManager, AwsServiceEnum
+from boto_session_manager import BotoSesManager
 
 from .arg import NOTHING, resolve_kwargs
 from .commit import Commit

@@ -23,6 +23,9 @@ def tokenize(text: str) -> T.List[str]:
 
 
 def _get_subject_regex(_types: T.List[str]) -> T.Pattern:
+    """
+    Example: ``${type}(${scope})${breaking}: ${description}``
+    """
     return re.compile(
         rf"^(?P<types>[\w ,]+)(?:\((?P<scope>[\w-]+)\))?(?P<breaking>!)?:[ \t]?(?P<description>.+)$"
     )
@@ -98,6 +101,7 @@ class SemanticCommitEnum(str, enum.Enum):
     effort.
     """
 
+    # based on purpose
     chore = "chore"  # house cleaning, do nothing
     feat = "feat"  # new feature
     feature = "feature"  # new feature
@@ -112,6 +116,21 @@ class SemanticCommitEnum(str, enum.Enum):
     publish = "publish"  # publish artifacts
     rls = "rls"  # release
     release = "release"  # release
+    clean = "clean"  # cleanup
+    cleanup = "cleanup"  # cleanup
+
+    # based on environment
+    dev = "dev"
+    develop = "develop"
+    # test = "test" # already have above
+    int = "int"
+    stage = "stage"
+    staging = "staging"
+    qa = "qa"
+    preprod = "preprod"
+    prod = "prod"
+    blue = "blue"
+    green = "green"
 
 
 default_parser = ConventionalCommitParser(types=list(SemanticCommitEnum))
@@ -120,14 +139,26 @@ default_parser = ConventionalCommitParser(types=list(SemanticCommitEnum))
 def is_certain_semantic_commit(
     commit_message: str,
     stub: T.Union[str, T.List[str]],
+    parser: ConventionalCommitParser = default_parser,
 ) -> bool:
     """
+    Identify whether the commit message is certain semantic commit.
 
-    :param commit_message:
-    :param semantic_commit_stub:
-    :return:
+    Below is an example to check if the commit message has the keyword "fix"::
+
+        >>> is_certain_semantic_commit(
+        ...     commit_message="fix: the function cannot handle this edge case",
+        ...     stub="fix",
+        ... )
+        True
+
+    :param commit_message: the commit message.
+    :param stub: commit type stub or list of commit type stub.
+    :param parser: a :class:`ConventionalCommitParser` object.
+
+    :return: a boolean value
     """
-    commit = default_parser.parse_message(commit_message)
+    commit = parser.parse_message(commit_message)
     if commit is None:
         return False
     if isinstance(stub, str):
@@ -153,41 +184,43 @@ def is_fix_commit(commit_message: str) -> bool:
     )
 
 
-def is_doc_commit(commit_message: str) -> bool:
-    return is_certain_semantic_commit(
-        commit_message,
-        SemanticCommitEnum.doc,
-    )
-
-
 def is_test_commit(commit_message: str) -> bool:
     return is_certain_semantic_commit(
-        commit_message, [
+        commit_message,
+        [
             SemanticCommitEnum.test,
             SemanticCommitEnum.utest,
             SemanticCommitEnum.itest,
             SemanticCommitEnum.ltest,
-        ]
+        ],
     )
 
 
-def is_utest_commit(commit_message: str) -> bool:
+def is_utest_commit(commit_message: str) -> bool:  # pragma: no cover
     return is_certain_semantic_commit(
-        commit_message, SemanticCommitEnum.utest
+        commit_message,
+        SemanticCommitEnum.utest,
     )
 
 
-def is_itest_commit(commit_message: str) -> bool:
+def is_itest_commit(commit_message: str) -> bool:  # pragma: no cover
     return is_certain_semantic_commit(
         commit_message,
         SemanticCommitEnum.itest,
     )
 
 
-def is_ltest_commit(commit_message: str) -> bool:
+def is_ltest_commit(commit_message: str) -> bool:  # pragma: no cover
     return is_certain_semantic_commit(
         commit_message,
         SemanticCommitEnum.ltest,
+    )
+
+
+def is_doc_commit(commit_message: str) -> bool:  # pragma: no cover
+    return is_certain_semantic_commit(
+        commit_message,
+        SemanticCommitEnum.doc,
     )
 
 
@@ -198,14 +231,14 @@ def is_build_commit(commit_message: str) -> bool:
     )
 
 
-def is_publish_commit(commit_message: str) -> bool:
+def is_publish_commit(commit_message: str) -> bool:  # pragma: no cover
     return is_certain_semantic_commit(
         commit_message,
         [SemanticCommitEnum.pub, SemanticCommitEnum.publish],
     )
 
 
-def is_release_commit(commit_message: str) -> bool:
+def is_release_commit(commit_message: str) -> bool:  # pragma: no cover
     return is_certain_semantic_commit(
         commit_message,
         [SemanticCommitEnum.rls, SemanticCommitEnum.release],

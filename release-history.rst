@@ -15,6 +15,18 @@ Backlog
 **Miscellaneous**
 
 
+1.4.1 (2023-02-15)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**Features and Improvements**
+
+- now :class:`~aws_codecommit.conventional_commits.is_certain_semantic_commit` allow to use custom :class:`~aws_codecommit.conventional_commits.ConventionalCommitParser`
+
+**Minor Improvements**
+
+- add more common type to :class:`~aws_codecommit.semantic_branch.SemanticBranchEnum`
+- add more common type to :class:`~aws_codecommit.conventional_commits.SemanticCommitEnum`
+
+
 1.3.3 (2022-12-11)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **Miscellaneous**

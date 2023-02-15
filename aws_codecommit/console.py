@@ -14,6 +14,17 @@ def browse_code(
     commit_id: T.Optional[str] = None,
     tag: T.Optional[str] = None,
 ) -> str:
+    """
+    Return AWS CodeCommit Console url for web browser, browse the list of
+    branches, or commits or git tags of the repository.
+
+    :param aws_region:
+    :param repo_name:
+    :param branch:
+    :param commit_id:
+    :param tag:
+    :return:
+    """
     if (
         sum(
             [
@@ -27,13 +38,25 @@ def browse_code(
         raise ValueError
 
     if branch:
-        return f"https://{aws_region}.console.aws.amazon.com/codesuite/codecommit/repositories/{repo_name}/browse/refs/heads/{branch}?region={aws_region}"
+        return (
+            f"https://{aws_region}.console.aws.amazon.com/codesuite/codecommit/"
+            f"repositories/{repo_name}/browse/refs/heads/{branch}?region={aws_region}"
+        )
     elif commit_id:
-        return f"https://{aws_region}.console.aws.amazon.com/codesuite/codecommit/repositories/{repo_name}/browse/{commit_id}?region={aws_region}"
+        return (
+            f"https://{aws_region}.console.aws.amazon.com/codesuite/codecommit/"
+            f"repositories/{repo_name}/browse/{commit_id}?region={aws_region}"
+        )
     elif tag:
-        return f"https://{aws_region}.console.aws.amazon.com/codesuite/codecommit/repositories/{repo_name}/browse/refs/tags/{tag}?region={aws_region}"
+        return (
+            f"https://{aws_region}.console.aws.amazon.com/codesuite/codecommit/"
+            f"repositories/{repo_name}/browse/refs/tags/{tag}?region={aws_region}"
+        )
     else:
-        return f"https://{aws_region}.console.aws.amazon.com/codesuite/codecommit/repositories/{repo_name}/browse?region={aws_region}"
+        return (
+            f"https://{aws_region}.console.aws.amazon.com/codesuite/codecommit/"
+            f"repositories/{repo_name}/browse?region={aws_region}"
+        )
 
 
 def browse_pr(
@@ -46,6 +69,19 @@ def browse_pr(
     commits_tab: T.Optional[bool] = None,
     approvals_tab: T.Optional[bool] = None,
 ):
+    """
+    Return AWS CodeCommit Console url for web browser, browse the pull request
+    code base on pr_id.
+
+    :param aws_region:
+    :param repo_name:
+    :param pr_id:
+    :param detail_tab:
+    :param activity_tab:
+    :param changes_tab:
+    :param commits_tab:
+    :param approvals_tab:
+    """
     flag_count = sum(
         [
             bool(detail_tab),
@@ -85,6 +121,14 @@ def browse_commit(
     repo_name: str,
     commit_id: str,
 ) -> str:
+    """
+    Return AWS CodeCommit Console url for web browser, browse the status of the
+    code base on specific commit_id.
+
+    :param aws_region:
+    :param repo_name:
+    :param commit_id:
+    """
     return (
         f"https://{aws_region}.console.aws.amazon.com/codesuite/codecommit"
         f"/repositories/{repo_name}/commit"
@@ -98,6 +142,15 @@ def browse_file(
     commit_id: str,
     file_path: str,
 ) -> str:
+    """
+    Return AWS CodeCommit Console url for web browser, browse the file content
+    on specific commit_id.
+
+    :param aws_region:
+    :param repo_name:
+    :param commit_id:
+    :param file_path:
+    """
     return (
         f"https://{aws_region}.console.aws.amazon.com/codesuite/codecommit"
         f"/repositories/{repo_name}"

@@ -53,6 +53,7 @@ class PulLRequestTarget:
 @dataclasses.dataclass
 class PullRequest:
     """
+    Data model of a Pull Request.
     """
     pr_id: str = dataclasses.field()
     title: str = dataclasses.field()

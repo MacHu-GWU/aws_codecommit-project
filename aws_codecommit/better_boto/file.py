@@ -10,6 +10,9 @@ from ..console import browse_file
 
 @dataclasses.dataclass
 class File:
+    """
+    Data model of a File.
+    """
     commit_id: str = dataclasses.field()
     blob_id: str = dataclasses.field()
     file_path: str = dataclasses.field()

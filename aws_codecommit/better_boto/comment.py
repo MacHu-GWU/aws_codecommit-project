@@ -11,6 +11,9 @@ from .arg import NOTHING, resolve_kwargs
 
 @dataclasses.dataclass
 class Comment:
+    """
+    Data model of a CodeCommit comment.
+    """
     comment_id: str = dataclasses.field(default="")
     content: str = dataclasses.field(default="")
     in_reply_to: T.Optional[str] = dataclasses.field(default=None)
